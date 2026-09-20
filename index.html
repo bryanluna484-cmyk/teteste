@@ -1,0 +1,4569 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, viewport-fit=cover"
+/>
+
+<meta name="theme-color" content="#000000">
+
+<title>Um lugar só nosso</title>
+
+<style>
+
+/* =========================================================
+   CONFIGURAÇÕES GERAIS
+========================================================= */
+
+:root{
+  --blue-950:#000000;
+  --blue-900:#030303;
+  --blue-850:#060606;
+  --blue-800:#090909;
+  --blue-700:#111111;
+  --blue-600:#1a1a1a;
+  --blue-500:#2a2a2a;
+  --blue-400:#777777;
+  --blue-300:#d6d6d6;
+  --blue-200:#eeeeee;
+
+  --pink:#f2abc9;
+  --pink-soft:#ffdbe9;
+
+  --cream:#fff9f3;
+  --gold:#ffd783;
+
+  --text:#f5f5f5;
+  --text-soft:#b8b8b8;
+
+  --glass:rgba(18,18,18,.72);
+  --glass-light:rgba(255,255,255,.08);
+
+  --shadow:0 30px 90px rgba(0,0,0,.38);
+
+  --radius:28px;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  background:#000;
+  color:var(--text);
+  font-family:
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    Arial,
+    sans-serif;
+  overflow-x:hidden;
+}
+
+button,
+input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+::selection{
+  background:var(--pink);
+  color:#17263a;
+}
+
+
+/* =========================================================
+   TELAS
+========================================================= */
+
+.screen{
+  min-height:100svh;
+  position:relative;
+}
+
+.hidden{
+  display:none !important;
+}
+
+
+/* =========================================================
+   TELA DA SENHA
+========================================================= */
+
+#lockScreen{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:
+    max(22px, env(safe-area-inset-top))
+    20px
+    max(22px, env(safe-area-inset-bottom));
+
+  overflow:auto;
+
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(255,255,255,.06),
+      transparent 38%
+    ),
+    linear-gradient(
+      180deg,
+      #030b15,
+      #030303 50%,
+      #060606
+    );
+}
+
+.lockMist{
+  position:absolute;
+  inset:auto -20% -12% -20%;
+  height:50%;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(255,255,255,.04),
+      transparent 66%
+    );
+
+  filter:blur(35px);
+  pointer-events:none;
+}
+
+.lockCard{
+  position:relative;
+  z-index:10;
+
+  width:min(670px, 100%);
+  padding:clamp(25px,5vw,52px);
+
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:32px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(10,10,10,.92),
+      rgba(18,18,18,.78)
+    );
+
+  backdrop-filter:blur(20px);
+  box-shadow:var(--shadow);
+}
+
+.lockTiny{
+  margin-bottom:20px;
+
+  font-size:.72rem;
+  letter-spacing:.32em;
+  color:var(--blue-300);
+  text-transform:uppercase;
+}
+
+.lockCard h1{
+  margin:0 0 26px;
+
+  font-family:Georgia,serif;
+  font-size:clamp(2rem,7vw,4.2rem);
+  font-weight:400;
+}
+
+.riddle{
+  color:#d0d0d0;
+  line-height:1.82;
+  font-size:clamp(.95rem,2.7vw,1.08rem);
+}
+
+.riddle strong{
+  color:white;
+}
+
+.frenchHint{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  margin-top:20px;
+  padding:14px 16px;
+
+  border-left:2px solid var(--pink);
+
+  color:var(--pink-soft);
+  background:rgba(255,255,255,.035);
+}
+
+.passwordArea{
+  position:relative;
+  z-index:1100;
+
+  display:flex;
+  gap:10px;
+
+  margin-top:27px;
+}
+
+#passwordInput{
+  position:relative;
+  z-index:1101;
+
+  flex:1;
+  min-width:0;
+  height:56px;
+
+  padding:0 18px;
+
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:16px;
+
+  outline:none;
+
+  color:white;
+  background:rgba(3,15,29,.8);
+
+  pointer-events:auto !important;
+  touch-action:manipulation;
+  -webkit-user-select:text;
+  user-select:text;
+}
+
+#passwordInput:focus{
+  border-color:var(--blue-400);
+  box-shadow:0 0 0 4px rgba(255,255,255,.08);
+}
+
+.enterBtn{
+  min-width:120px;
+
+  border:0;
+  border-radius:16px;
+
+  padding:0 20px;
+
+  color:#061a2d;
+  font-weight:800;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--blue-300),
+      var(--pink-soft)
+    );
+
+  box-shadow:0 12px 30px rgba(0,0,0,.28);
+}
+
+#errorMessage{
+  min-height:22px;
+  margin-top:12px;
+
+  font-size:.9rem;
+  color:#ffc8d6;
+}
+
+#extraHint{
+  margin-top:14px;
+  color:#aaaaaa;
+  font-size:.88rem;
+  opacity:0;
+
+  transition:.7s;
+}
+
+#extraHint.visible{
+  opacity:1;
+}
+
+
+/* =========================================================
+   TRANSIÇÃO "JE T'AIME"
+========================================================= */
+
+#transitionScreen{
+  position:fixed;
+  inset:0;
+  z-index:9000;
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  background:#000000;
+}
+
+.transitionWord{
+  font-family:Georgia,serif;
+  font-size:clamp(3rem,13vw,8rem);
+  letter-spacing:.08em;
+  color:white;
+
+  opacity:0;
+  transform:translateY(20px);
+
+  animation:transitionReveal 3s forwards;
+}
+
+@keyframes transitionReveal{
+  0%{
+    opacity:0;
+    transform:translateY(20px);
+  }
+
+  25%{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  75%{
+    opacity:1;
+  }
+
+  100%{
+    opacity:0;
+    transform:translateY(-12px);
+  }
+}
+
+
+/* =========================================================
+   SITE PRINCIPAL
+========================================================= */
+
+#site{
+  display:none;
+  position:relative;
+}
+
+section{
+  position:relative;
+}
+
+.content{
+  width:min(1100px, calc(100% - 36px));
+  margin:auto;
+}
+
+
+/* =========================================================
+   HERO / LAGO
+========================================================= */
+
+.hero{
+  min-height:100svh;
+
+  display:flex;
+  align-items:center;
+
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      #000 0%, #030303 55%, #080808 100%
+    );
+}
+
+
+/* lua */
+
+.moon{
+  position:absolute;
+  top:9%;
+  right:13%;
+
+  width:clamp(72px,10vw,120px);
+  aspect-ratio:1;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      #fffdf0,
+      #f6e1ae 60%,
+      #d9b56d
+    );
+
+  box-shadow:
+    0 0 30px rgba(255,226,158,.33),
+    0 0 90px rgba(255,226,158,.18);
+}
+
+
+/* montanhas */
+
+.mountains{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:36%;
+
+  height:24%;
+
+  opacity:.7;
+
+  background:
+    linear-gradient(
+      145deg,
+      transparent 0 12%,
+      #080808 13% 29%,
+      transparent 30% 34%,
+      #0b0b0b 35% 51%,
+      transparent 52% 61%,
+      #070707 62% 77%,
+      transparent 78%
+    );
+}
+
+
+/* lago */
+
+.lake{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+
+  height:43%;
+
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      #070707,
+      #090909 25%,
+      #050505 65%,
+      #000000
+    );
+}
+
+.lake::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background:
+    repeating-linear-gradient(
+      178deg,
+      transparent 0 19px,
+      rgba(255,255,255,.045) 20px,
+      transparent 22px 44px
+    );
+
+  animation:waterMove 10s linear infinite;
+}
+
+@keyframes waterMove{
+  from{
+    transform:translateX(-30px);
+  }
+
+  to{
+    transform:translateX(30px);
+  }
+}
+
+
+/* reflexo da lua */
+
+.moonReflection{
+  position:absolute;
+  right:11%;
+  top:0;
+
+  width:20%;
+  height:100%;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,227,164,.4),
+      transparent 72%
+    );
+
+  clip-path:polygon(
+    37% 0,
+    63% 0,
+    80% 100%,
+    19% 100%
+  );
+
+  filter:blur(9px);
+  opacity:.4;
+}
+
+
+/* luzes flutuando */
+
+.waterLight{
+  position:absolute;
+
+  width:4px;
+  height:4px;
+
+  border-radius:50%;
+  background:white;
+
+  box-shadow:
+    0 0 6px white,
+    0 0 18px #ffffff;
+
+  animation:floatLight 5s ease-in-out infinite;
+}
+
+@keyframes floatLight{
+  0%,100%{
+    transform:translateY(0);
+    opacity:.4;
+  }
+
+  50%{
+    transform:translateY(-9px);
+    opacity:1;
+  }
+}
+
+
+/* nevoa */
+
+.mist{
+  position:absolute;
+  left:-10%;
+  right:-10%;
+  bottom:29%;
+
+  height:18%;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(255,255,255,.045),
+      transparent 65%
+    );
+
+  filter:blur(24px);
+  animation:mistMove 14s ease-in-out infinite alternate;
+}
+
+@keyframes mistMove{
+  from{
+    transform:translateX(-3%);
+  }
+
+  to{
+    transform:translateX(3%);
+  }
+}
+
+
+/* conteúdo hero */
+
+.heroContent{
+  position:relative;
+  z-index:20;
+
+  padding-top:60px;
+  padding-bottom:30vh;
+}
+
+.heroEyebrow{
+  margin-bottom:18px;
+
+  font-size:.75rem;
+  text-transform:uppercase;
+  letter-spacing:.33em;
+  color:var(--blue-300);
+}
+
+.hero h1{
+  max-width:800px;
+  margin:0;
+
+  font-family:Georgia,serif;
+  font-size:clamp(3rem,10vw,7rem);
+  font-weight:400;
+  line-height:.95;
+}
+
+.hero h1 span{
+  color:#f0f0f0;
+}
+
+.heroText{
+  max-width:550px;
+  margin-top:25px;
+
+  line-height:1.8;
+  color:#d0d0d0;
+}
+
+.scrollHint{
+  margin-top:34px;
+
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+
+  font-size:.78rem;
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  color:#9fc5df;
+}
+
+.scrollLine{
+  width:45px;
+  height:1px;
+  background:#9fc5df;
+}
+
+
+/* Gatinho interativo estilo scamp-cat */
+#scamp-cat {
+  position: fixed;
+  width: 64px;
+  height: 64px;
+  image-rendering: pixelated;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 9999;
+  transition: none;
+}
+
+.musicPlayer{
+  position:fixed;
+  z-index:800;
+
+  right:18px;
+  bottom:
+    max(
+      18px,
+      calc(env(safe-area-inset-bottom) + 10px)
+    );
+
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  padding:9px 12px 9px 9px;
+
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:999px;
+
+  background:rgba(5,26,48,.72);
+  backdrop-filter:blur(16px);
+
+  box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+.musicButton{
+  width:39px;
+  height:39px;
+
+  display:grid;
+  place-items:center;
+
+  border:0;
+  border-radius:50%;
+
+  color:white;
+  background:#2f6f9f;
+}
+
+.musicInfo{
+  font-size:.72rem;
+  line-height:1.3;
+}
+
+.musicInfo strong{
+  display:block;
+  font-size:.78rem;
+}
+
+
+/* =========================================================
+   SEÇÕES
+========================================================= */
+
+.section{
+  padding:clamp(90px,13vw,170px) 0;
+}
+
+.sectionHeader{
+  max-width:680px;
+  margin-bottom:60px;
+}
+
+.sectionIndex{
+  display:block;
+  margin-bottom:14px;
+
+  font-size:.68rem;
+  letter-spacing:.32em;
+  text-transform:uppercase;
+  color:var(--blue-300);
+}
+
+.sectionTitle{
+  margin:0;
+
+  font-family:Georgia,serif;
+  font-size:clamp(2.5rem,7vw,5.5rem);
+  font-weight:400;
+  line-height:1.05;
+}
+
+.sectionText{
+  margin-top:20px;
+
+  color:#c3dbea;
+  line-height:1.85;
+}
+
+
+/* =========================================================
+   SUN / STORM
+========================================================= */
+
+.sunSection{
+  background:
+    radial-gradient(
+      circle at 82% 30%,
+      rgba(255,214,123,.12),
+      transparent 24%
+    ),
+    linear-gradient(
+      180deg,
+      #0c2f52,
+      #123c61
+    );
+}
+
+.sunQuote{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:35px;
+  align-items:center;
+}
+
+.quoteCard{
+  padding:clamp(26px,5vw,50px);
+
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:var(--radius);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(8,33,60,.62),
+      rgba(37,83,116,.35)
+    );
+
+  box-shadow:var(--shadow);
+}
+
+.quoteCard p{
+  margin:0;
+
+  font-family:Georgia,serif;
+  font-size:clamp(1.7rem,4vw,3.2rem);
+  line-height:1.35;
+}
+
+.sunOrb{
+  width:min(300px,70vw);
+  aspect-ratio:1;
+  margin:auto;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle at 38% 30%,
+      #fffbe5,
+      #ffe69e 37%,
+      #ffc969 74%,
+      #eaa64b
+    );
+
+  box-shadow:
+    0 0 35px rgba(255,220,136,.34),
+    0 0 120px rgba(255,197,103,.18);
+}
+
+
+/* =========================================================
+   QUANDO O MUNDO PESA — nova seção, sem sol
+========================================================= */
+.stormSection{
+  position:relative;
+  overflow:hidden;
+}
+.stormIntro{max-width:720px;margin-bottom:58px;}
+.stormScene{
+  position:relative;
+  min-height:430px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:30px;
+  background:
+    radial-gradient(circle at 50% 38%,rgba(242,171,201,.10),transparent 28%),
+    linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012));
+  box-shadow:0 30px 80px rgba(0,0,0,.35), inset 0 1px rgba(255,255,255,.05);
+}
+.stormScene::before{
+  content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(105deg,transparent 0 38px,rgba(255,255,255,.025) 39px 40px,transparent 41px 72px);
+  opacity:.7;
+}
+.stormRain{position:absolute;inset:-20%;transform:rotate(12deg);background:repeating-linear-gradient(105deg,transparent 0 42px,rgba(210,220,255,.08) 43px 44px,transparent 45px 82px);animation:rainMove 4s linear infinite;}
+.stormWindow{
+  position:relative;z-index:2;width:min(650px,78%);padding:48px clamp(25px,5vw,58px);
+  text-align:center;border:1px solid rgba(242,171,201,.22);
+  background:rgba(5,5,9,.78);backdrop-filter:blur(8px);
+  box-shadow:0 20px 70px rgba(0,0,0,.45);
+}
+.windowLabel{display:block;font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:#d8b5c5;margin-bottom:22px;}
+.stormWindow p{margin:0;font-family:Georgia,serif;font-size:clamp(1.55rem,3.4vw,2.65rem);line-height:1.4;color:#fff;}
+.windowSignature{display:block;margin-top:28px;font-size:.82rem;letter-spacing:.08em;color:#f2abc9;}
+.stormSpark{position:absolute;width:5px;height:5px;border-radius:50%;background:#fff;box-shadow:0 0 16px 4px rgba(242,171,201,.35);z-index:3;animation:sparkPulse 2.6s ease-in-out infinite;}
+.sparkOne{top:22%;left:16%;}.sparkTwo{right:18%;top:32%;animation-delay:.8s}.sparkThree{left:26%;bottom:19%;animation-delay:1.5s}
+@keyframes rainMove{from{transform:translateY(-20px) rotate(12deg)}to{transform:translateY(55px) rotate(12deg)}}
+@keyframes sparkPulse{0%,100%{opacity:.2;transform:scale(.7)}50%{opacity:1;transform:scale(1.5)}}
+@media(max-width:600px){.stormScene{min-height:390px}.stormWindow{width:82%;padding:34px 22px}.stormWindow p{font-size:1.45rem;}}
+
+/* =========================================================
+   HISTÓRIAS INTEGRADAS
+========================================================= */
+
+.storyRiver{
+  background:
+    linear-gradient(
+      180deg,
+      #123c61,
+      #103957 45%,
+      #0b2e49
+    );
+}
+
+.storyIntro{
+  max-width:680px;
+}
+
+.storyIntro strong{
+  color:white;
+}
+
+.bookTrail{
+  margin-top:70px;
+
+  display:flex;
+  flex-direction:column;
+  gap:28px;
+}
+
+.bookMoment{
+  display:grid;
+  grid-template-columns:150px 1fr;
+  gap:28px;
+  align-items:center;
+
+  padding:25px;
+
+  border-radius:24px;
+  border:1px solid rgba(255,255,255,.09);
+
+  background:rgba(255,255,255,.04);
+
+  transition:
+    transform .35s,
+    background .35s;
+}
+
+.bookMoment:hover{
+  transform:translateY(-5px);
+  background:rgba(255,255,255,.065);
+}
+
+.bookMoment:nth-child(even){
+  margin-left:10%;
+}
+
+.bookShape{
+  position:relative;
+
+  width:115px;
+  height:155px;
+
+  border-radius:7px 14px 14px 7px;
+
+  padding:18px 13px;
+
+  display:flex;
+  align-items:flex-end;
+
+  box-shadow:
+    -7px 7px 0 rgba(0,0,0,.17),
+    0 18px 30px rgba(0,0,0,.25);
+
+  overflow:hidden;
+}
+
+.bookShape::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      125deg,
+      rgba(255,255,255,.2),
+      transparent 40%
+    );
+}
+
+.bookShape span{
+  position:relative;
+  z-index:3;
+
+  font-family:Georgia,serif;
+  font-size:.9rem;
+  line-height:1.2;
+}
+
+.binding{
+  background:#556f8b;
+}
+
+.keeping{
+  background:#8b5670;
+}
+
+.taming{
+  background:#d6a35e;
+  color:#172130;
+}
+
+.first{
+  background:#485477;
+}
+
+.drama{
+  background:#7092a9;
+}
+
+.bookText h3{
+  margin:0 0 10px;
+
+  font-family:Georgia,serif;
+  font-size:clamp(1.5rem,4vw,2.2rem);
+  font-weight:400;
+}
+
+.bookText p{
+  margin:0;
+  max-width:650px;
+
+  color:#c2d7e5;
+  line-height:1.8;
+}
+
+
+/* =========================================================
+   MATUÊ / NOITE MUSICAL
+========================================================= */
+
+.musicWorld{
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      #0b2e49,
+      #071e38 75%
+    );
+}
+
+.musicGlow{
+  position:absolute;
+  width:430px;
+  height:430px;
+
+  right:-130px;
+  top:70px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(100,132,255,.16),
+      rgba(211,98,204,.09),
+      transparent 68%
+    );
+
+  filter:blur(10px);
+}
+
+.neonCard{
+  max-width:800px;
+
+  padding:clamp(28px,6vw,60px);
+
+  border:1px solid rgba(147,184,255,.16);
+  border-radius:30px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(40,51,103,.28),
+      rgba(9,29,53,.65)
+    );
+
+  box-shadow:
+    0 0 60px rgba(83,111,213,.08),
+    var(--shadow);
+}
+
+.neonTitle{
+  margin:0 0 17px;
+
+  font-family:Georgia,serif;
+  font-size:clamp(2.2rem,7vw,5rem);
+
+  text-shadow:
+    0 0 18px rgba(119,151,255,.2);
+}
+
+.neonLabel{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+
+  margin-top:27px;
+  padding:9px 13px;
+
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:999px;
+
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.15em;
+
+  color:#cbd7ff;
+}
+
+.neonDot{
+  width:7px;
+  height:7px;
+
+  border-radius:50%;
+
+  background:#b174ff;
+
+  box-shadow:
+    0 0 9px #b174ff,
+    0 0 19px rgba(177,116,255,.6);
+}
+
+
+/* =========================================================
+   PIXEL SKY — clima de montanha / aventura, inspirado em Celeste
+   (formas originais em CSS, sem assets do jogo)
+========================================================= */
+.musicWorld{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  background:
+    linear-gradient(180deg,#07152f 0%,#102d4b 52%,#193f59 100%);
+}
+
+.celestePixelSky{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.celestePixelSky::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:38%;
+  background:linear-gradient(180deg,transparent,rgba(4,14,31,.3));
+}
+
+.pixelStar{
+  position:absolute;
+  width:4px;
+  height:4px;
+  background:#d8eaff;
+  box-shadow:4px 0 #d8eaff,0 4px #d8eaff,4px 4px #d8eaff;
+  opacity:.7;
+  animation:pixelTwinkle 3s steps(2,end) infinite;
+}
+.pixelStar.s1{left:13%;top:18%;}
+.pixelStar.s2{left:31%;top:10%;animation-delay:.7s;}
+.pixelStar.s3{left:67%;top:17%;animation-delay:1.4s;}
+.pixelStar.s4{left:83%;top:9%;animation-delay:2s;}
+.pixelStar.s5{left:54%;top:28%;animation-delay:1s;}
+
+@keyframes pixelTwinkle{
+  0%,100%{opacity:.25;transform:scale(1)}
+  50%{opacity:.9;transform:scale(1.35)}
+}
+
+/* removed old pixel cloud */
+.pixelCloud{
+  position:absolute;
+  width:72px;
+  height:16px;
+  background:rgba(205,228,246,.10);
+  box-shadow:
+    12px -8px rgba(205,228,246,.10),
+    28px -12px rgba(205,228,246,.10),
+    48px -6px rgba(205,228,246,.10),
+    64px 0 rgba(205,228,246,.10);
+  image-rendering:pixelated;
+  animation:cloudFloat 18s linear infinite;
+}
+.cloud1{top:25%;left:-110px;}
+.cloud2{top:39%;left:58%;transform:scale(.72);animation-duration:24s;animation-delay:-9s;}
+
+@keyframes cloudFloat{
+  from{margin-left:-20px}
+  to{margin-left:calc(100vw + 150px)}
+}
+
+.pixelMountain{
+  position:absolute;
+  left:-5%;
+  width:110%;
+  bottom:0;
+  clip-path:polygon(0 100%,0 78%,8% 72%,14% 78%,24% 51%,31% 68%,40% 35%,47% 59%,55% 42%,64% 67%,73% 48%,82% 72%,90% 55%,100% 73%,100% 100%);
+}
+.pixelMountain.back{
+  height:58%;
+  background:#122f4c;
+  opacity:.8;
+}
+.pixelMountain.front{
+  height:45%;
+  background:#0b223b;
+  clip-path:polygon(0 100%,0 68%,12% 57%,20% 73%,32% 40%,41% 64%,51% 30%,59% 61%,69% 44%,78% 70%,89% 49%,100% 67%,100% 100%);
+}
+.pixelSnow{
+  position:absolute;
+  bottom:35%;
+  left:0;
+  width:100%;
+  height:7px;
+  opacity:.16;
+  background:repeating-linear-gradient(90deg,transparent 0 22px,#d7e8f7 22px 31px,transparent 31px 48px);
+}
+
+.musicWorld > .content{position:relative;z-index:2;}
+
+.neonCard{
+  position:relative;
+  overflow:hidden;
+  backdrop-filter:blur(2px);
+}
+
+.neonCard::before{
+  content:"✦  ✧  ✦";
+  position:absolute;
+  top:18px;
+  right:24px;
+  font-size:13px;
+  letter-spacing:9px;
+  color:rgba(191,219,255,.35);
+}
+
+/* =========================================================
+   KITTY-INSPIRED SCRAPBOOK
+========================================================= */
+
+
+
+.scrapPixelBackdrop{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  opacity:.55;
+}
+.scrapbook{position:relative;isolation:isolate;overflow:hidden;}
+.scrapbook > .content{position:relative;z-index:2;}
+.scrapPixelStar{
+  position:absolute;
+  width:5px;height:5px;
+  background:#fff;
+  box-shadow:5px 0 #fff,0 5px #fff,5px 5px #fff;
+  opacity:.55;
+}
+.ps1{left:8%;top:18%}.ps2{right:12%;top:27%}.ps3{left:45%;bottom:14%}
+.scrapCloud,.scrapHill{position:absolute;image-rendering:pixelated;}
+.scrapCloud{width:90px;height:18px;background:rgba(191,222,242,.10);box-shadow:14px -9px rgba(191,222,242,.10),34px -12px rgba(191,222,242,.10),58px -7px rgba(191,222,242,.10);}
+.sc1{left:4%;top:12%}.sc2{right:5%;top:72%;transform:scale(.7)}
+.scrapHill{bottom:-5%;width:65%;height:32%;background:rgba(44,91,113,.22);clip-path:polygon(0 100%,0 72%,16% 58%,27% 78%,44% 38%,56% 69%,71% 49%,84% 72%,100% 56%,100% 100%);}
+.sh1{left:-8%}.sh2{right:-18%;transform:scaleX(-1);}
+
+.scrapbook{
+  background:
+    linear-gradient(180deg,#081d35,#123d57);
+}
+
+.scrapPaper{
+  position:relative;
+  overflow:hidden;
+
+  padding:clamp(25px,5vw,55px);
+
+  border-radius:28px;
+
+  color:#243447;
+
+  background:
+    linear-gradient(
+      140deg,
+      #fffaf8,
+      #f8f2f6
+    );
+
+  box-shadow:var(--shadow);
+}
+
+
+/* fita adesiva */
+
+.tape{
+  position:absolute;
+
+  width:100px;
+  height:28px;
+
+  background:rgba(180,215,239,.65);
+
+  transform:rotate(-8deg);
+}
+
+.tape.one{
+  top:8px;
+  left:35px;
+}
+
+.tape.two{
+  bottom:17px;
+  right:28px;
+
+  transform:rotate(7deg);
+}
+
+
+/* Hello Kitty pixel art — adaptada do CodePen de danixia-torres */
+
+.kittyPixelArt{
+  position:relative;
+  width:190px;
+  min-height:190px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transform:rotate(-3deg);
+}
+
+.kittyPixelArt::before{
+  content:"";
+  position:absolute;
+  inset:8px;
+  background:rgba(255,255,255,.55);
+  border:1px dashed rgba(78,105,129,.24);
+  border-radius:18px;
+  transform:rotate(4deg);
+}
+
+#helloKittyPixel{
+  position:relative;
+  z-index:1;
+  display:block;
+  width:180px;
+  height:180px;
+  image-rendering:pixelated;
+  image-rendering:crisp-edges;
+}
+
+.scrapContent{
+  display:grid;
+  grid-template-columns:180px 1fr;
+  gap:28px;
+  align-items:center;
+}
+
+.scrapText h2{
+  margin:0 0 12px;
+
+  font-family:Georgia,serif;
+  font-size:clamp(2rem,6vw,4rem);
+  font-weight:400;
+}
+
+.scrapText p{
+  margin:0;
+  max-width:650px;
+
+  line-height:1.8;
+  color:#536678;
+}
+
+.miniStickers{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+
+  margin-top:24px;
+}
+
+.miniSticker{
+  padding:9px 13px;
+
+  border:2px solid #e8c9d7;
+  border-radius:12px;
+
+  background:white;
+
+  font-size:.78rem;
+  font-weight:700;
+
+  transform:rotate(-2deg);
+}
+
+.miniSticker:nth-child(even){
+  transform:rotate(3deg);
+}
+
+
+/* =========================================================
+   CARTA
+========================================================= */
+
+.letterSection{
+  background:
+    linear-gradient(
+      180deg,
+      #103858,
+      #0c304e
+    );
+}
+
+.letterScene{
+  position:relative;
+
+  max-width:850px;
+  margin:auto;
+}
+
+.envelope{
+  position:absolute;
+  right:-20px;
+  top:-25px;
+
+  width:130px;
+  height:90px;
+
+  transform:rotate(7deg);
+
+  background:#e6b2c5;
+
+  border-radius:5px;
+
+  box-shadow:0 18px 30px rgba(0,0,0,.24);
+}
+
+.envelope::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  clip-path:polygon(0 0,50% 55%,100% 0);
+
+  background:#f1cad8;
+}
+
+.envelopeHeart{
+  position:absolute;
+  z-index:3;
+
+  left:50%;
+  top:43%;
+
+  transform:translate(-50%,-50%);
+
+  color:#9d456a;
+  font-size:22px;
+}
+
+.letterPaper{
+  position:relative;
+  z-index:2;
+
+  padding:
+    clamp(35px,7vw,75px)
+    clamp(25px,7vw,75px);
+
+  border-radius:10px;
+
+  color:#283b4b;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(157,200,230,.13) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      #fffdfa,
+      #f8f4ee
+    );
+
+  background-size:100% 34px;
+
+  box-shadow:
+    0 35px 80px rgba(0,0,0,.35);
+}
+
+.letterPaper::before{
+  content:"";
+
+  position:absolute;
+  left:35px;
+  top:0;
+  bottom:0;
+
+  width:1px;
+
+  background:#e7b7c8;
+}
+
+.letterTitle{
+  margin:0 0 35px;
+
+  font-family:Georgia,serif;
+  font-size:clamp(2.3rem,6vw,4rem);
+  font-weight:400;
+}
+
+.letterBody{
+  position:relative;
+  z-index:2;
+
+  line-height:2;
+  font-size:clamp(.98rem,2.6vw,1.08rem);
+}
+
+.letterBody p{
+  margin:0 0 22px;
+}
+
+.letterBody .pause{
+  margin:34px 0;
+
+  font-family:Georgia,serif;
+  font-size:1.5rem;
+  color:#925b74;
+}
+
+.signature{
+  margin-top:50px;
+
+  font-family:Georgia,serif;
+  font-style:italic;
+  font-size:1.2rem;
+}
+
+
+/* =========================================================
+   SEGREDOS
+========================================================= */
+
+.secretSection{
+  background:
+    linear-gradient(
+      180deg,
+      #0c304e,
+      #092640
+    );
+}
+
+.secretGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.secretCard{
+  min-height:200px;
+
+  padding:25px;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:24px;
+
+  background:rgba(255,255,255,.04);
+
+  transition:
+    transform .3s,
+    background .3s;
+}
+
+.secretCard:hover{
+  transform:translateY(-5px);
+  background:rgba(255,255,255,.07);
+}
+
+.secretNumber{
+  font-size:.65rem;
+  letter-spacing:.24em;
+  color:var(--blue-300);
+}
+
+.secretOpen{
+  border:0;
+  padding:0;
+
+  color:white;
+  text-align:left;
+  background:none;
+
+  font-family:Georgia,serif;
+  font-size:1.5rem;
+}
+
+.secretText{
+  margin-top:15px;
+
+  color:#c5dceb;
+  line-height:1.7;
+
+  display:none;
+}
+
+.secretCard.revealed .secretText{
+  display:block;
+}
+
+.secretCard.revealed .secretOpen{
+  color:var(--pink-soft);
+}
+
+
+/* =========================================================
+   CONTAGEM
+========================================================= */
+
+.countdownSection{
+  background:
+    linear-gradient(
+      180deg,
+      #092640,
+      #071d34
+    );
+}
+
+.countdownBox{
+  padding:clamp(28px,6vw,60px);
+
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:30px;
+
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(122,185,223,.12),
+      transparent 27%
+    ),
+    rgba(255,255,255,.035);
+
+  box-shadow:var(--shadow);
+}
+
+.countdown{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+
+  margin-top:40px;
+}
+
+.timeBox{
+  padding:22px 10px;
+
+  text-align:center;
+
+  border-radius:20px;
+  background:rgba(255,255,255,.045);
+}
+
+.timeNumber{
+  display:block;
+
+  font-family:Georgia,serif;
+  font-size:clamp(2rem,7vw,4rem);
+}
+
+.timeLabel{
+  margin-top:6px;
+
+  display:block;
+
+  font-size:.65rem;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+
+  color:#a8c7da;
+}
+
+
+/* =========================================================
+   ÁREA BLOQUEADA
+========================================================= */
+
+.lockedSection{
+  min-height:90svh;
+
+  display:flex;
+  align-items:center;
+
+  background:
+    linear-gradient(
+      180deg,
+      #071d34,
+      #041321
+    );
+}
+
+.lockedCard{
+  width:min(720px,100%);
+  margin:auto;
+
+  text-align:center;
+
+  padding:clamp(35px,7vw,70px);
+
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:30px;
+
+  background:
+    rgba(255,255,255,.035);
+}
+
+.lockIcon{
+  width:66px;
+  height:66px;
+
+  margin:0 auto 25px;
+
+  display:grid;
+  place-items:center;
+
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:50%;
+
+  font-size:1.4rem;
+}
+
+.lockedCard h2{
+  margin:0;
+
+  font-family:Georgia,serif;
+  font-size:clamp(2.4rem,7vw,5rem);
+  font-weight:400;
+}
+
+.lockedCard p{
+  max-width:560px;
+
+  margin:22px auto 0;
+
+  line-height:1.8;
+  color:#b9d0df;
+}
+
+
+/* =========================================================
+   ANIVERSÁRIO
+========================================================= */
+
+#birthdayWorld{
+  display:none;
+
+  min-height:100svh;
+
+  align-items:center;
+  text-align:center;
+
+  overflow:hidden;
+
+  color:#20384a;
+
+  background:
+    linear-gradient(
+      180deg,
+      #cdeaff,
+      #a8d8f3 45%,
+      #f8d995
+    );
+}
+
+#birthdayWorld.active{
+  display:flex;
+}
+
+.birthdaySun{display:none !important;
+  position:absolute;
+
+  width:340px;
+  aspect-ratio:1;
+
+  top:-70px;
+  right:-80px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      #fffde4,
+      #ffd779 58%,
+      #f3b850
+    );
+
+  box-shadow:
+    0 0 100px rgba(255,216,128,.48);
+}
+
+.birthdayContent{
+  position:relative;
+  z-index:3;
+
+  width:min(800px,calc(100% - 38px));
+  margin:auto;
+}
+
+.birthdayContent h2{
+  margin:0;
+
+  font-family:Georgia,serif;
+  font-size:clamp(3rem,10vw,7rem);
+  font-weight:400;
+}
+
+.birthdayContent p{
+  max-width:590px;
+
+  margin:25px auto;
+
+  line-height:1.8;
+}
+
+.finalPlaceholder{
+  margin-top:40px;
+  padding:24px;
+
+  border:1px dashed rgba(32,56,74,.35);
+  border-radius:18px;
+
+  font-size:.8rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+  padding:45px 20px 65px;
+
+  text-align:center;
+
+  color:#84aac3;
+  background:#041321;
+
+  font-family:Georgia,serif;
+}
+
+
+/* =========================================================
+   ANIMAÇÃO DE APARECIMENTO
+========================================================= */
+
+.reveal{
+  opacity:0;
+  transform:translateY(35px);
+
+  transition:
+    opacity .85s ease,
+    transform .85s ease;
+}
+
+.reveal.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media(max-width:800px){
+
+  .sunQuote{
+    grid-template-columns:1fr;
+  }
+
+  .sunOrb{
+    width:180px;
+  }
+
+  .bookMoment,
+  .bookMoment:nth-child(even){
+    margin-left:0;
+
+    grid-template-columns:100px 1fr;
+  }
+
+  .bookShape{
+    width:88px;
+    height:125px;
+  }
+
+  .secretGrid{
+    grid-template-columns:1fr;
+  }
+
+  .scrapContent{
+    grid-template-columns:1fr;
+  }
+
+  .poemCard{
+    padding:52px 30px 42px 38px;
+  }
+
+  .poemText{
+    font-size:16px;
+  }
+
+  .kittyPixelArt{
+    margin:auto auto 30px;
+  }
+.musicInfo{
+    display:none;
+  }
+
+  .musicPlayer{
+    padding:7px;
+  }
+
+}
+
+
+@media(max-width:600px){
+
+  .content{
+    width:min(100% - 28px,1100px);
+  }
+
+  .lockCard{
+    padding:27px 21px;
+    border-radius:24px;
+  }
+
+  .passwordArea{
+    flex-direction:column;
+  }
+
+  #passwordInput{
+    width:100%;
+    flex:none;
+  }
+
+  .enterBtn{
+    width:100%;
+    height:52px;
+  }
+
+  .hero{
+    min-height:100svh;
+  }
+
+  .heroContent{
+    padding-top:40px;
+    padding-bottom:38vh;
+  }
+
+  .hero h1{
+    font-size:clamp(3rem,15vw,5rem);
+  }
+
+  .moon{
+    right:9%;
+    top:9%;
+  }
+.section{
+    padding:95px 0;
+  }
+
+  .bookMoment{
+    grid-template-columns:1fr;
+  }
+
+  .bookShape{
+    width:100px;
+    height:140px;
+  }
+
+  .countdown{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .envelope{
+    right:10px;
+    top:-42px;
+
+    transform:scale(.8) rotate(7deg);
+  }
+
+  .letterPaper{
+    border-radius:6px;
+  }
+
+  .letterPaper::before{
+    left:20px;
+  }
+
+}
+
+
+@media(max-width:390px){
+
+  .hero h1{
+    font-size:2.85rem;
+  }
+
+  .heroText{
+    font-size:.92rem;
+  }
+.countdownBox{
+    padding:25px 15px;
+  }
+
+}
+
+
+/* acessibilidade */
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    scroll-behavior:auto !important;
+  }
+
+}
+
+
+/* =========================================================
+   FUNDO GLOBAL — céu estrelado inspirado no código enviado
+========================================================= */
+#fallingStars{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:2;
+  pointer-events:none;
+  display:block;
+}
+
+html,body{
+  background:#0a0b18 !important;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255,255,255,.035), transparent 28%),
+    radial-gradient(circle at 82% 70%, rgba(242,171,201,.035), transparent 30%),
+    linear-gradient(180deg,#0a0b18 0%,#0d0b1c 48%,#120d1c 100%);
+}
+
+#site, #site > *{ position:relative; z-index:1; }
+
+.hero,.stormSection,.storyRiver,.musicWorld,.scrapbook,.letterSection,footer,#birthdayWorld{
+  background:transparent !important;
+}
+
+.hero{min-height:100svh;}
+.moon,.sun,.planet,.mountains,.lake,.mist,.moonReflection,.waterLight,.celestePixelSky,.pixelMountain,.pixelCloud,.scrapPixelBackdrop{
+  display:none !important;
+}
+
+/* O gatinho é uma camada independente: passa por cima de textos, cards e cenário. */
+#scamp-cat{
+  position:fixed !important;
+  z-index:2147483647 !important;
+  pointer-events:none !important;
+}
+
+/* Mantém os papéis claros como pontos de contraste. */
+.scrapPaper,.letterPaper{background-color:#fffafc;}
+
+/* Referência visual de livro: discreta, sem virar mais um card. */
+.bookReference{
+  position:relative;
+  width:min(190px,100%);
+  margin:28px 0 0;
+  padding:14px 16px 13px;
+  border:1px solid rgba(205,157,179,.55);
+  border-radius:10px;
+  background:rgba(255,255,255,.72);
+  box-shadow:6px 7px 0 rgba(226,188,205,.28);
+  transform:rotate(-1.5deg);
+}
+.bookReference::before{
+  content:"";
+  position:absolute;
+  left:15px; top:-7px;
+  width:58px; height:9px;
+  background:#e9bfd1;
+  transform:rotate(-2deg);
+}
+.bookReferenceBook{
+  position:relative;
+  height:54px;
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  margin-bottom:8px;
+}
+.bookReferenceBook::before,
+.bookReferenceBook::after{
+  content:"";
+  width:65px;
+  height:48px;
+  background:linear-gradient(145deg,#fff,#f3e9ed);
+  border:1px solid #d8bcc8;
+  box-shadow:inset 0 0 0 3px rgba(255,255,255,.65);
+}
+.bookReferenceBook::before{
+  transform:skewY(4deg);
+  border-radius:5px 1px 1px 5px;
+  border-right:0;
+}
+.bookReferenceBook::after{
+  transform:skewY(-4deg);
+  border-radius:1px 5px 5px 1px;
+  border-left:0;
+}
+.bookReferenceNumber{
+  position:absolute;
+  left:50%; bottom:7px;
+  transform:translateX(-50%);
+  font:700 10px Georgia,serif;
+  color:#a75c7d;
+  letter-spacing:.08em;
+}
+.bookReference small{
+  display:block;
+  color:#8d6878;
+  font-size:.68rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+@media(max-width:800px){
+  .bookReference{margin-left:auto;margin-right:auto;}
+}
+
+
+/* =========================================================
+   NOVO UNIVERSO — PRETO + CHUVA DE ESTRELAS
+   ========================================================= */
+html, body{
+  background:#000 !important;
+}
+body{
+  color:#f5f5f5;
+  overflow-x:hidden;
+}
+#site{
+  background:#000 !important;
+  position:relative;
+}
+#site::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(255,255,255,.035), transparent 22%),
+    radial-gradient(circle at 78% 68%, rgba(242,171,201,.025), transparent 24%);
+}
+.hero, .section, .musicWorld, .scrapbook, .letterSection{
+  background:#000 !important;
+}
+.hero{
+  position:relative;
+  isolation:isolate;
+}
+.moon,.mountains,.lake,.mist,.moonReflection,.waterLight{
+  display:none !important;
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+  background:radial-gradient(ellipse at center, transparent 0 45%, rgba(0,0,0,.42) 100%);
+}
+.fallingStars{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:1;
+}
+.fallingStar{
+  position:absolute;
+  top:-12vh;
+  width:2px;
+  height:2px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 0 7px rgba(255,255,255,.85);
+  opacity:0;
+  animation:starFall linear infinite;
+}
+.fallingStar.pink{
+  background:#f2abc9;
+  box-shadow:0 0 9px rgba(242,171,201,.9);
+}
+.fallingStar.long{
+  width:2px;
+  height:14px;
+  border-radius:2px;
+  background:linear-gradient(to bottom, transparent, #fff);
+  box-shadow:0 0 8px rgba(255,255,255,.55);
+}
+@keyframes starFall{
+  0%{transform:translate3d(0,-12vh,0) rotate(15deg);opacity:0;}
+  8%{opacity:.85;}
+  75%{opacity:.7;}
+  100%{transform:translate3d(-7vw,112vh,0) rotate(15deg);opacity:0;}
+}
+/* remove remnants of the former blue atmosphere */
+.musicGlow,.scrapPixelBackdrop{
+  opacity:.18 !important;
+  filter:grayscale(1) !important;
+}
+.musicWorld{
+  background:#000 !important;
+}
+.neonCard{
+  background:rgba(12,12,12,.88) !important;
+  border-color:rgba(242,171,201,.2) !important;
+}
+
+</style>
+
+<style id="v11-black-adjustments">
+:root{
+  --bg:#000 !important;
+  --background:#000 !important;
+  --navy:#000 !important;
+  --deep:#000 !important;
+  --blue:#000 !important;
+  --sky:#000 !important;
+}
+html,body{
+  background:#000 !important;
+  background-color:#000 !important;
+}
+#site{
+  background:#000 !important;
+}
+.hero,
+.section,
+.musicWorld,
+.scrapbook,
+.letterSection,
+#birthdayWorld{
+  background:#000 !important;
+  background-color:#000 !important;
+}
+/* Remove the old celestial/blue scenery entirely */
+.moon,
+.sun,
+.planet,
+.mountains,
+.lake,
+.mist,
+.moonReflection,
+.waterLight,
+.celestePixelSky,
+.pixelMountain,
+.pixelCloud,
+.scrapPixelBackdrop{
+  display:none !important;
+}
+/* Preserve white/pink content surfaces */
+.poemCard,
+.neonCard,
+.bookReference,
+.letterPaper,
+.memoryCard,
+.scrapbookCard{
+  /* intentionally not overridden */
+}
+</style>
+
+</head>
+
+
+<body>
+<canvas id="fallingStars" aria-hidden="true"></canvas>
+
+
+<!-- ======================================================
+     SENHA
+======================================================= -->
+
+<div id="lockScreen">
+
+  <div class="lockMist"></div>
+
+  <div class="lockCard">
+
+    <div class="lockTiny">
+      existe uma porta antes desse lugar
+    </div>
+
+    <h1>
+      A porta está fechada.
+    </h1>
+
+    <div class="riddle">
+
+      E para abri-la, você vai precisar de três palavras.
+
+      <br><br>
+
+      A primeira é pequena,
+      <br>
+      mas pode representar quem fala.
+
+      <br><br>
+
+      A segunda não pertence a ninguém sozinho.
+      <br>
+      É uma ponte entre duas pessoas.
+
+      <br><br>
+
+      A terceira é um sentimento
+      <br>
+      que pode incendiar o peito,
+      <br>
+      acalmar uma tempestade
+      <br>
+      ou fazer alguém sorrir sem perceber.
+
+      <br><br>
+
+      Juntas, elas não formam uma pergunta.
+      <br>
+      Não formam um pedido.
+
+      <br><br>
+
+      <strong>
+        Formam uma declaração.
+      </strong>
+
+    </div>
+
+
+    <div class="frenchHint">
+      <span>FR</span>
+
+      <span>
+        existe apenas um detalhe:
+        você não vai encontrá-la em português.
+      </span>
+    </div>
+
+
+    <div class="passwordArea">
+
+      <input
+        id="passwordInput"
+        type="text"
+        autocomplete="off"
+        autocapitalize="none"
+        spellcheck="false"
+        placeholder="escreva a frase..."
+      >
+
+      <button
+        id="enterButton"
+        class="enterBtn"
+        type="button"
+      >
+        entrar
+      </button>
+
+    </div>
+
+    <div id="errorMessage"></div>
+
+    <div id="extraHint">
+      Uma última pista: talvez você já tenha ouvido
+      essa frase em algum filme, música ou história de amor.
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ======================================================
+     TRANSIÇÃO
+======================================================= -->
+
+<div id="transitionScreen">
+
+  <div class="transitionWord">
+    JE T'AIME
+  </div>
+
+</div>
+
+
+<!-- ======================================================
+     PLAYER
+======================================================= -->
+
+<div
+  id="musicPlayer"
+  class="musicPlayer hidden"
+>
+
+  <button
+    id="musicButton"
+    class="musicButton"
+    aria-label="Tocar ou pausar música"
+  >
+    ▶
+  </button>
+
+  <div class="musicInfo">
+    <strong>Get You</strong>
+    Daniel Caesar
+  </div>
+
+</div>
+
+
+<audio
+  id="backgroundMusic"
+  preload="auto"
+  loop
+  playsinline
+>
+  <source
+    src="assets/get-you.mp3"
+    type="audio/mpeg"
+  >
+</audio>
+
+
+<!-- ======================================================
+     SITE
+======================================================= -->
+
+<!-- Gatinho: camada independente do conteúdo e do scroll -->
+  <div id="scamp-cat" aria-hidden="true"></div>
+
+<main id="site">
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+  <div class="content heroContent">
+
+    <div class="heroEyebrow">
+      você descobriu a chave
+    </div>
+
+    <h1>
+      agora pode
+      <span>entrar.</span>
+    </h1>
+
+    <p class="heroText">
+      Eu imaginei esse lugar como aqueles momentos
+      em que tudo fica silencioso por alguns segundos.
+      Um lago, algumas luzes refletindo na água e
+      alguém que você gostaria que estivesse ali com você.
+    </p>
+
+    <div class="scrollHint">
+
+      <span class="scrollLine"></span>
+
+      continue descendo
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- QUANDO O MUNDO PESA -->
+<section class="section stormSection">
+  <div class="content">
+    <div class="stormIntro reveal">
+      <span class="sectionIndex">uma coisa que pensei sobre você</span>
+      <h2 class="sectionTitle">Tem coisas que deixam o mundo mais leve.</h2>
+      <p class="sectionText">
+        Nem todo carinho precisa chegar fazendo barulho.
+        Às vezes ele aparece devagar, no meio de um dia difícil,
+        e muda a forma como a gente enxerga tudo ao redor.
+      </p>
+    </div>
+
+    <div class="stormScene reveal">
+      <div class="stormRain" aria-hidden="true"></div>
+      <div class="stormWindow">
+        <span class="windowLabel">quando tudo fica pesado</span>
+        <p>
+          Algumas pessoas não precisam consertar a tempestade.
+          Só precisam estar ali para fazer a gente lembrar
+          que ela também passa.
+        </p>
+        <span class="windowSignature">e você tem esse efeito em mim.</span>
+      </div>
+      <div class="stormSpark sparkOne" aria-hidden="true"></div>
+      <div class="stormSpark sparkTwo" aria-hidden="true"></div>
+      <div class="stormSpark sparkThree" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- HISTÓRIAS / POEMA -->
+
+<section class="section storyRiver">
+
+  <div class="content">
+
+    <div class="storyIntro reveal">
+
+      <span class="sectionIndex">
+        entre páginas, rodas e melodias
+      </span>
+
+      <h2 class="sectionTitle">
+        Tem um pedacinho seu em tudo que virou meu carinho.
+      </h2>
+
+      <p class="sectionText">
+        Acho que você foi entrando na minha vida desse jeito:
+        devagar, pelos detalhes, até algumas coisas começarem
+        a ter um significado que só nós dois entendemos.
+      </p>
+
+    </div>
+
+    <div class="poemCard reveal">
+
+      <div class="poemText">
+
+        <p>
+          Tem uma coisa engraçada em gostar de você:
+          depois de um tempo, parece que você começa a morar
+          nas coisas mais pequenas do meu dia.
+        </p>
+
+        <p>
+          Eu vejo um livro e lembro de você.
+          Não só pelas histórias que você gosta,
+          mas por imaginar você ali, virando uma página,
+          encontrando alguma frase bonita e guardando ela
+          do seu jeitinho. E talvez eu goste ainda mais
+          da ideia de que, em algum cantinho, existe uma página
+          que poderia ser nossa.
+        </p>
+
+        <p>
+          Tem também o som dos patins.
+          Aquela sensação de movimento, de liberdade,
+          de sair do lugar mesmo sem saber exatamente
+          onde vai chegar. Acho bonito pensar em você assim:
+          um pouco delicada, um pouco teimosa,
+          e completamente impossível de não querer acompanhar.
+        </p>
+
+        <p>
+          E tem a música.
+          Algumas músicas agora parecem guardar pedaços
+          de conversas, noites e pensamentos que eu tive sobre você.
+          Às vezes uma música começa e eu nem preciso tentar lembrar:
+          você simplesmente aparece.
+        </p>
+
+        <p>
+          E talvez o detalhe que mais me faz sorrir seja esse
+          nome que você me deu: <strong>coelhinho</strong>.
+          Eu gosto de ser seu coelhinho.
+          Gosto do carinho escondido nessa palavra,
+          daquele jeitinho íntimo que faz uma palavra comum
+          parecer ter sido inventada só para nós dois.
+        </p>
+
+        <p>
+          Então, quando eu falo que você está nos detalhes,
+          não é só uma frase bonita.
+          É porque você realmente ficou.
+          Ficou nos livros, nas músicas, nos patins,
+          nas coisas fofas que lembram você,
+          e principalmente naquele sorriso meio bobo
+          que aparece quando eu penso que, de alguma forma,
+          sou o seu coelhinho.
+        </p>
+
+        <p class="poemFinal">
+          Talvez seja isso que eu queria que você soubesse:
+          eu não gosto só das grandes coisas em você.
+          <br>
+          Eu gosto de tudo aquilo que, sem perceber,
+          fez você virar um lugar tão bonito para mim.
+        </p>
+
+      </div>
+
+      <div class="poemReferences" aria-label="Pequenas referências">
+        <span>livros</span>
+        <span>patins</span>
+        <span>música</span>
+        <span>coelhinho</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- REFERÊNCIA MUSICAL / MATUÊ -->
+
+<section class="section musicWorld">
+
+  <div class="musicGlow"></div>
+  
+    
+    
+    
+    <div class="pixelSnow"></div>
+  </div>
+
+  <div class="content">
+
+    <div class="neonCard reveal">
+
+      <span class="sectionIndex">
+        algumas noites têm trilha sonora
+      </span>
+
+      <h2 class="neonTitle">
+        Algumas músicas têm o seu nome.
+      </h2>
+
+      <p class="sectionText">
+
+        Tem músicas que a gente simplesmente escuta.
+        E tem aquelas que, depois de alguém,
+        nunca mais são apenas músicas.
+
+        <br><br>
+
+        Talvez você nem saiba,
+        mas existem melodias que agora carregam
+        um pouco da lembrança de você.
+        Uma noite, uma conversa,
+        uma letra qualquer,
+        aquele momento em que eu estava pensando em você
+        sem nem perceber.
+
+        <br><br>
+
+        E quando a música volta,
+        você volta junto.
+
+      </p>
+
+      <div class="neonLabel">
+
+        <span class="neonDot"></span>
+
+        30 • universo particular
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- SCRAPBOOK -->
+
+<section class="section scrapbook">
+
+  <span class="scrapPixelStar ps2"></span><span class="scrapPixelStar ps3"></span>
+    <span class="scrapCloud sc1"></span><span class="scrapCloud sc2"></span>
+    <span class="scrapHill sh1"></span><span class="scrapHill sh2"></span>
+  </div>
+
+  <div class="content">
+
+
+    <div class="scrapPaper reveal">
+
+      <div class="tape one"></div>
+      <div class="tape two"></div>
+
+
+      <div class="scrapContent">
+
+
+        <div class="kittyPixelArt reveal" aria-label="Pixel art da Hello Kitty">
+          <canvas id="helloKittyPixel" width="1000" height="1000"></canvas>
+        </div>
+
+
+        <div class="scrapText">
+
+          <h2>
+            Você acabou ficando nos detalhes.
+          </h2>
+
+          <p>
+            Não são grandes coisas que me fazem lembrar de você.
+            Às vezes é uma página de um livro,
+            um par de patins passando por mim,
+            uma música tocando no momento errado,
+            ou até um coelhinho em algum canto qualquer.
+
+            <br><br>
+
+            São coisas pequenas. Quase bobas.
+            Mas, de algum jeito, todas conseguem me levar até você.
+
+            <br><br>
+
+            Acho bonito pensar que alguém pode deixar
+            pequenos pedaços de si espalhados pelo mundo
+            sem sequer perceber.
+
+            <br><br>
+
+            E talvez seja isso que eu mais gosto:
+            saber que, mesmo quando você não está aqui,
+            ainda existem coisas capazes de me fazer lembrar de você.
+          </p>
+
+          <div class="bookReference" aria-label="Pequena referência a um livro">
+            <div class="bookReferenceBook" aria-hidden="true">
+              <span class="bookReferenceNumber">13</span>
+            </div>
+            <small>uma página que ficou comigo</small>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- CARTA -->
+
+<section class="section letterSection">
+
+  <div class="content">
+
+
+    <div class="sectionHeader reveal">
+
+      <span class="sectionIndex">
+        talvez a parte mais importante daqui
+      </span>
+
+      <h2 class="sectionTitle">
+        Uma carta para você.
+      </h2>
+
+    </div>
+
+
+    <div class="letterScene reveal">
+
+
+      <div class="envelope">
+
+        <div class="envelopeHeart">
+          ♡
+        </div>
+
+      </div>
+
+
+      <article class="letterPaper">
+
+
+        <h2 class="letterTitle">
+          meu amor,
+        </h2>
+
+
+        <div class="letterBody">
+
+
+          <p>
+            eu fiquei pensando muito no que escrever aqui,
+            porque quando é sobre você parece que qualquer
+            palavra fica pequena.
+          </p>
+
+
+          <p>
+            eu poderia falar que você é linda,
+            que você é incrível,
+            que eu gosto de você,
+            mas sinto que tudo isso ainda não explica
+            direito o que acontece quando penso em você.
+          </p>
+
+
+          <p class="pause">
+            tem alguma coisa em você que me prende.
+          </p>
+
+
+          <p>
+            não sei se é seu jeito,
+            seu sorriso,
+            a maneira que você fala das coisas que gosta,
+            ou simplesmente a forma que você consegue existir
+            e fazer eu querer ficar olhando mais um pouco.
+          </p>
+
+
+          <p>
+            e talvez você nem perceba,
+            mas existem pequenas coisas suas que ficam em mim.
+          </p>
+
+
+          <p>
+            uma conversa,
+            uma risada,
+            uma coisa que você falou sem dar importância...
+            às vezes eu lembro depois e sorrio sozinho.
+          </p>
+
+
+          <p>
+            acho bonito isso.
+          </p>
+
+
+          <p>
+            acho bonito quando alguém consegue ocupar
+            um espaço dentro da gente
+            sem precisar fazer esforço.
+          </p>
+
+
+          <p class="pause">
+            você fez isso comigo.
+          </p>
+
+
+          <p>
+            e eu não quero que você pense que eu estou
+            escrevendo isso simplesmente por causa
+            de uma data.
+          </p>
+
+
+          <p>
+            eu escreveria isso em qualquer outro dia também.
+          </p>
+
+
+          <p>
+            porque você é uma dessas pessoas
+            que eu tenho vontade de guardar.
+          </p>
+
+
+          <p>
+            não como quem prende alguma coisa,
+            mas como quem guarda uma lembrança bonita
+            com medo de esquecer algum detalhe.
+          </p>
+
+
+          <p>
+            eu gosto de imaginar que,
+            mesmo quando a vida estiver acontecendo rápido demais,
+            vão existir momentos em que eu vou lembrar de você
+            e tudo vai ficar um pouco mais calmo.
+          </p>
+
+
+          <p>
+            talvez seja por isso que eu gosto tanto
+            dessa ideia de você ser o sol
+            no meio da tempestade.
+          </p>
+
+
+          <p>
+            porque tem pessoas que chegam fazendo barulho.
+          </p>
+
+
+          <p>
+            e tem pessoas que simplesmente chegam
+            e deixam tudo mais leve.
+          </p>
+
+
+          <p class="pause">
+            você é assim para mim.
+          </p>
+
+
+          <p>
+            e eu espero que você consiga enxergar em você
+            pelo menos uma parte da garota
+            que eu enxergo.
+          </p>
+
+
+          <p>
+            porque eu vejo alguém maravilhosa.
+          </p>
+
+
+          <p>
+            alguém que merece ser amada nos detalhes,
+            admirada sem precisar pedir
+            e lembrada mesmo quando não está por perto.
+          </p>
+
+
+          <p>
+            e se algum dia você esquecer
+            o quanto é especial,
+            eu espero que volte aqui.
+          </p>
+
+
+          <p>
+            olha para esse lugar,
+            olha para todas essas pequenas coisas
+            que eu coloquei aqui
+            e lembra que alguém parou
+            para pensar em você em cada uma delas.
+          </p>
+
+
+          <p>
+            talvez eu nunca consiga explicar completamente
+            o que você significa para mim.
+          </p>
+
+
+          <p>
+            mas talvez nem tudo precise ser explicado.
+          </p>
+
+
+          <p>
+            algumas pessoas a gente simplesmente sente.
+          </p>
+
+
+          <p class="pause">
+            e você...
+            <br>
+            eu sinto.
+          </p>
+
+
+          <p>
+            com carinho,
+            com desejo,
+            com admiração
+            e com todo esse sentimento
+            que ainda nem sei direito como chamar.
+          </p>
+
+
+          <p class="signature">
+            meu amor. ♡
+          </p>
+
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- SEGREDOS -->
+
+<section class="section secretSection">
+
+  <div class="content">
+
+
+    <div class="sectionHeader reveal">
+
+      <span class="sectionIndex">
+        você ainda não viu tudo
+      </span>
+
+      <h2 class="sectionTitle">
+        Algumas coisas ficam escondidas.
+      </h2>
+
+      <p class="sectionText">
+        toque em cada uma.
+      </p>
+
+    </div>
+
+
+    <div class="secretGrid">
+
+
+      <article class="secretCard reveal">
+
+        <span class="secretNumber">
+          SEGREDO 01
+        </span>
+
+        <button class="secretOpen">
+          abre aqui
+        </button>
+
+        <div class="secretText">
+          Tem gente que ilumina um lugar.
+          Você ilumina quem está nele.
+        </div>
+
+      </article>
+
+
+
+      <article class="secretCard reveal">
+
+        <span class="secretNumber">
+          SEGREDO 02
+        </span>
+
+        <button class="secretOpen">
+          talvez esse seja meu favorito
+        </button>
+
+        <div class="secretText">
+          Espero que por alguns minutos aqui
+          você consiga se enxergar
+          do jeito bonito que eu te enxergo.
+        </div>
+
+      </article>
+
+
+
+      <article class="secretCard reveal">
+
+        <span class="secretNumber">
+          SEGREDO 03
+        </span>
+
+        <button class="secretOpen">
+          mais um
+        </button>
+
+        <div class="secretText">
+          Você tem uma maneira bonita de existir.
+          Acho que talvez você nem perceba isso.
+        </div>
+
+      </article>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- CONTAGEM -->
+
+<section class="section countdownSection">
+
+  <div class="content">
+
+
+    <div class="countdownBox reveal">
+
+
+      <span class="sectionIndex">
+        21 de setembro
+      </span>
+
+
+      <h2 class="sectionTitle">
+        Ainda falta um pouco.
+      </h2>
+
+
+      <p class="sectionText">
+
+        Algumas coisas ficam ainda mais bonitas
+        quando acontecem exatamente
+        no momento certo.
+
+      </p>
+
+
+      <div class="countdown">
+
+        <div class="timeBox">
+
+          <span
+            id="days"
+            class="timeNumber"
+          >
+            00
+          </span>
+
+          <span class="timeLabel">
+            dias
+          </span>
+
+        </div>
+
+
+        <div class="timeBox">
+
+          <span
+            id="hours"
+            class="timeNumber"
+          >
+            00
+          </span>
+
+          <span class="timeLabel">
+            horas
+          </span>
+
+        </div>
+
+
+        <div class="timeBox">
+
+          <span
+            id="minutes"
+            class="timeNumber"
+          >
+            00
+          </span>
+
+          <span class="timeLabel">
+            minutos
+          </span>
+
+        </div>
+
+
+        <div class="timeBox">
+
+          <span
+            id="seconds"
+            class="timeNumber"
+          >
+            00
+          </span>
+
+          <span class="timeLabel">
+            segundos
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- BLOQUEADO -->
+
+<section
+  id="lockedArea"
+  class="lockedSection"
+>
+
+  <div class="content">
+
+    <div class="lockedCard reveal">
+
+      <div class="lockIcon">
+        ♡
+      </div>
+
+      <span class="sectionIndex">
+        ainda não
+      </span>
+
+      <h2>
+        Essa parte ainda está fechada.
+      </h2>
+
+      <p>
+        Algumas coisas precisam acontecer
+        no momento certo.
+        Volte aqui no dia 21.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ANIVERSÁRIO / REVELAÇÃO FINAL -->
+<section id="birthdayWorld">
+  <div class="finalReveal" id="finalReveal">
+    <div class="finalIntro" id="finalIntro">
+      <span class="sectionIndex">finalmente</span>
+      <h2>Uma frase.<br><em>O mundo inteiro dizendo.</em></h2>
+      <p>Eu procurei uma maneira de dizer o que sinto<br>e descobri que algumas palavras atravessam fronteiras.</p>
+      <button class="finalStart" id="finalStart">começar ✦</button>
+    </div>
+    <div class="languageStage" id="languageStage" aria-live="polite">
+      <div class="languageCounter" id="languageCounter"></div>
+      <div class="languageWords" id="loveWords"><div class="languagePhrase"><span>English</span><strong>I love you</strong></div>
+<div class="languagePhrase"><span>French</span><strong>Je t&#x27;aime</strong></div>
+<div class="languagePhrase"><span>Spanish</span><strong>Te amo</strong></div>
+<div class="languagePhrase"><span>Italian</span><strong>Ti amo</strong></div>
+<div class="languagePhrase"><span>Portuguese</span><strong>Eu te amo</strong></div>
+<div class="languagePhrase"><span>Dutch</span><strong>Ik hou van jou</strong></div>
+<div class="languagePhrase"><span>Swedish</span><strong>Jag älskar dig</strong></div>
+<div class="languagePhrase"><span>Norwegian</span><strong>Jeg elsker deg</strong></div>
+<div class="languagePhrase"><span>Danish</span><strong>Jeg elsker dig</strong></div>
+<div class="languagePhrase"><span>Finnish</span><strong>Rakastan sinua</strong></div>
+<div class="languagePhrase"><span>Russian</span><strong>Я тебя люблю</strong></div>
+<div class="languagePhrase"><span>Polish</span><strong>Kocham cię</strong></div>
+<div class="languagePhrase"><span>Czech</span><strong>Miluji tě</strong></div>
+<div class="languagePhrase"><span>Slovak</span><strong>Milujem ťa</strong></div>
+<div class="languagePhrase"><span>Hungarian</span><strong>Szeretlek</strong></div>
+<div class="languagePhrase"><span>Romanian</span><strong>Te iubesc</strong></div>
+<div class="languagePhrase"><span>Bulgarian</span><strong>Обичам те</strong></div>
+<div class="languagePhrase"><span>Croatian</span><strong>Volim te</strong></div>
+<div class="languagePhrase"><span>Serbian</span><strong>Волим те</strong></div>
+<div class="languagePhrase"><span>Slovenian</span><strong>Ljubim te</strong></div>
+<div class="languagePhrase"><span>Bosnian</span><strong>Volim te</strong></div>
+<div class="languagePhrase"><span>Albanian</span><strong>Të dua</strong></div>
+<div class="languagePhrase"><span>Macedonian</span><strong>Те сакам</strong></div>
+<div class="languagePhrase"><span>Ukrainian</span><strong>Я тебе кохаю</strong></div>
+<div class="languagePhrase"><span>Belarusian</span><strong>Я цябе кахаю</strong></div>
+<div class="languagePhrase"><span>Latvian</span><strong>Es tevi mīlu</strong></div>
+<div class="languagePhrase"><span>Lithuanian</span><strong>Aš tave myliu</strong></div>
+<div class="languagePhrase"><span>Estonian</span><strong>Ma armastan sind</strong></div>
+<div class="languagePhrase"><span>Icelandic</span><strong>Ég elska þig</strong></div>
+<div class="languagePhrase"><span>Irish</span><strong>Is gráich liom thú</strong></div>
+<div class="languagePhrase"><span>Welsh</span><strong>Rwy&#x27;n dy garu di</strong></div>
+<div class="languagePhrase"><span>Catalan</span><strong>T&#x27;estimo</strong></div>
+<div class="languagePhrase"><span>Basque</span><strong>Maite zaitut</strong></div>
+<div class="languagePhrase"><span>Galician</span><strong>Ámote</strong></div>
+<div class="languagePhrase"><span>Maltese</span><strong>Inħobbok</strong></div>
+<div class="languagePhrase"><span>Luxembourgish</span><strong>Ech hun dech gär</strong></div>
+<div class="languagePhrase"><span>Frisian</span><strong>Ik hâld fan dy</strong></div>
+<div class="languagePhrase"><span>Latin</span><strong>Te amo</strong></div>
+<div class="languagePhrase"><span>Esperanto</span><strong>Mi amas vin</strong></div>
+<div class="languagePhrase"><span>Georgian</span><strong>მიყვარხარ</strong></div>
+<div class="languagePhrase"><span>Armenian</span><strong>Ես քեզ սիրում եմ</strong></div>
+<div class="languagePhrase"><span>Azerbaijani</span><strong>Mən səni sevirəm</strong></div>
+<div class="languagePhrase"><span>Turkish</span><strong>Seni seviyorum</strong></div>
+<div class="languagePhrase"><span>Kazakh</span><strong>Мен сені жақсы көремін</strong></div>
+<div class="languagePhrase"><span>Uzbek</span><strong>Men seni sevaman</strong></div>
+<div class="languagePhrase"><span>Kyrgyz</span><strong>Мен сени жакшы көрөм</strong></div>
+<div class="languagePhrase"><span>Turkmen</span><strong>Men seni söýýärin</strong></div>
+<div class="languagePhrase"><span>Tajik</span><strong>Ман туро дӯст медорам</strong></div>
+<div class="languagePhrase"><span>Persian</span><strong>دوستت دارم</strong></div>
+<div class="languagePhrase"><span>Arabic</span><strong>أنا أحبك</strong></div>
+<div class="languagePhrase"><span>Hebrew</span><strong>אני אוהב אותך</strong></div>
+<div class="languagePhrase"><span>Kurdish</span><strong>Ez ji te hez dikim</strong></div>
+<div class="languagePhrase"><span>Pashto</span><strong>زه تا سره مینه لرم</strong></div>
+<div class="languagePhrase"><span>Hindi</span><strong>मैं तुमसे प्यार करता हूँ</strong></div>
+<div class="languagePhrase"><span>Urdu</span><strong>میں تم سے پیار کرتا ہوں</strong></div>
+<div class="languagePhrase"><span>Bengali</span><strong>আমি তোমাকে ভালোবাসি</strong></div>
+<div class="languagePhrase"><span>Punjabi</span><strong>ਮੈਂ ਤੁਹਾਨੂੰ ਪਿਆਰ ਕਰਦਾ ਹਾਂ</strong></div>
+<div class="languagePhrase"><span>Gujarati</span><strong>હું તને પ્રેમ કરું છું</strong></div>
+<div class="languagePhrase"><span>Marathi</span><strong>मी तुझ्यावर प्रेम करतो</strong></div>
+<div class="languagePhrase"><span>Tamil</span><strong>நான் உன்னை காதலிக்கிறேன்</strong></div>
+<div class="languagePhrase"><span>Telugu</span><strong>నేను నిన్ను ప్రేమిస్తున్నాను</strong></div>
+<div class="languagePhrase"><span>Kannada</span><strong>ನಾನು ನಿನ್ನನ್ನು ಪ್ರೀತಿಸುತ್ತೇನೆ</strong></div>
+<div class="languagePhrase"><span>Malayalam</span><strong>ഞാൻ നിന്നെ സ്നേഹിക്കുന്നു</strong></div>
+<div class="languagePhrase"><span>Sinhala</span><strong>මම ඔයාට ආදරෙයි</strong></div>
+<div class="languagePhrase"><span>Nepali</span><strong>म तिमीलाई माया गर्छु</strong></div>
+<div class="languagePhrase"><span>Mandarin Chinese</span><strong>我爱你</strong></div>
+<div class="languagePhrase"><span>Cantonese Chinese</span><strong>我愛你</strong></div>
+<div class="languagePhrase"><span>Japanese</span><strong>愛してる</strong></div>
+<div class="languagePhrase"><span>Korean</span><strong>사랑해</strong></div>
+<div class="languagePhrase"><span>Mongolian</span><strong>Би чамд хайртай</strong></div>
+<div class="languagePhrase"><span>Tibetan</span><strong>ང་ཁྱེད་རང་ལ་དགའ་པོ་ཡོད།</strong></div>
+<div class="languagePhrase"><span>Vietnamese</span><strong>Anh yêu em</strong></div>
+<div class="languagePhrase"><span>Thai</span><strong>ฉันรักคุณ</strong></div>
+<div class="languagePhrase"><span>Burmese</span><strong>ကျွန်တော် မင်းကို ချစ်တယ်</strong></div>
+<div class="languagePhrase"><span>Khmer</span><strong>ខ្ញុំស្រឡាញ់អ្នក</strong></div>
+<div class="languagePhrase"><span>Lao</span><strong>ຂ້ອຍຮັກເຈົ້າ</strong></div>
+<div class="languagePhrase"><span>Indonesian</span><strong>Aku cinta kamu</strong></div>
+<div class="languagePhrase"><span>Malay</span><strong>Aku sayang kamu</strong></div>
+<div class="languagePhrase"><span>Tagalog</span><strong>Mahal kita</strong></div>
+<div class="languagePhrase"><span>Hawaiian</span><strong>Aloha wau iā &#x27;oe</strong></div>
+<div class="languagePhrase"><span>Maori</span><strong>Aroha ana ahau iā koe</strong></div>
+<div class="languagePhrase"><span>Samoan</span><strong>Ou te alofa ia te oe</strong></div>
+<div class="languagePhrase"><span>Swahili</span><strong>Nakupenda</strong></div>
+<div class="languagePhrase"><span>Amharic</span><strong>እወድሻለሁ</strong></div>
+<div class="languagePhrase"><span>Hausa</span><strong>Ina sonki</strong></div>
+<div class="languagePhrase"><span>Yoruba</span><strong>Mo nifẹ rẹ</strong></div>
+<div class="languagePhrase"><span>Igbo</span><strong>A hụrụ m gị n&#x27;anya</strong></div>
+<div class="languagePhrase"><span>Zulu</span><strong>Ngiyakuthanda</strong></div>
+<div class="languagePhrase"><span>Xhosa</span><strong>Ndiyakuthanda</strong></div>
+<div class="languagePhrase"><span>Afrikaans</span><strong>Ek is lief vir jou</strong></div>
+<div class="languagePhrase"><span>Somali</span><strong>Waan ku jecelahay</strong></div>
+<div class="languagePhrase"><span>Shona</span><strong>Ndinokuda</strong></div>
+<div class="languagePhrase"><span>Sesotho</span><strong>Ke a go rata</strong></div>
+<div class="languagePhrase"><span>Malagasy</span><strong>Tia anao aho</strong></div>
+<div class="languagePhrase"><span>Wolof</span><strong>Dama la nob</strong></div>
+<div class="languagePhrase"><span>Bambara</span><strong>Ne bi fe</strong></div>
+<div class="languagePhrase"><span>Kinyarwanda</span><strong>Ndagukunda</strong></div>
+<div class="languagePhrase"><span>Lingala</span><strong>Nalingi yo</strong></div>
+<div class="languagePhrase"><span>Tahitian</span><strong>Ua here vau ia oe</strong></div>
+<div class="languagePhrase"><span>Fijian</span><strong>Au domoni iko</strong></div></div>
+      <div class="languageWords" id="birthdayWords"><div class="languagePhrase"><span>English</span><strong>Happy Birthday</strong></div>
+<div class="languagePhrase"><span>Afrikaans</span><strong>Gelukkige Verjaardag</strong></div>
+<div class="languagePhrase"><span>Albanian</span><strong>Gëzuar Ditëlindjen</strong></div>
+<div class="languagePhrase"><span>Arabic</span><strong>Eid Milad Saeid</strong></div>
+<div class="languagePhrase"><span>Armenian</span><strong>Tsnundd Shnorhavor</strong></div>
+<div class="languagePhrase"><span>Azerbaijani</span><strong>Ad günün mübarək</strong></div>
+<div class="languagePhrase"><span>Bangla</span><strong>Śubha janmadina</strong></div>
+<div class="languagePhrase"><span>Basque</span><strong>Zorionak</strong></div>
+<div class="languagePhrase"><span>Belarusian</span><strong>Z Dniom Naradžennia</strong></div>
+<div class="languagePhrase"><span>Bosnian</span><strong>Sretan rođendan</strong></div>
+<div class="languagePhrase"><span>Bulgarian</span><strong>Chestit Rozhden den</strong></div>
+<div class="languagePhrase"><span>Burmese</span><strong>Pyawrwin hpwalrar mwaynae</strong></div>
+<div class="languagePhrase"><span>Catalan</span><strong>Feliç aniversari</strong></div>
+<div class="languagePhrase"><span>Cebuano</span><strong>Malipayong adlawng natawhan</strong></div>
+<div class="languagePhrase"><span>Chinese</span><strong>Shēngrì kuàilè</strong></div>
+<div class="languagePhrase"><span>Corsican</span><strong>Felice Anniversariu</strong></div>
+<div class="languagePhrase"><span>Croatian</span><strong>Sretan rođendan</strong></div>
+<div class="languagePhrase"><span>Czech</span><strong>Všechno nejlepší k narozeninám</strong></div>
+<div class="languagePhrase"><span>Danish</span><strong>Tillykke med fødselsdagen</strong></div>
+<div class="languagePhrase"><span>Dutch</span><strong>Gelukkige verjaardag</strong></div>
+<div class="languagePhrase"><span>Esperanto</span><strong>Feliĉan naskiĝtagon</strong></div>
+<div class="languagePhrase"><span>Estonian</span><strong>Palju õnne sünnipäevaks</strong></div>
+<div class="languagePhrase"><span>Filipino</span><strong>Maligayang kaarawan</strong></div>
+<div class="languagePhrase"><span>Finnish</span><strong>Hyvää syntymäpäivää</strong></div>
+<div class="languagePhrase"><span>French</span><strong>Joyeux anniversaire</strong></div>
+<div class="languagePhrase"><span>Galician</span><strong>Feliz Aniversario</strong></div>
+<div class="languagePhrase"><span>Georgian</span><strong>გილოცავ დაბადების დღეს</strong></div>
+<div class="languagePhrase"><span>German</span><strong>Alles Gute zum Geburtstag</strong></div>
+<div class="languagePhrase"><span>Greek</span><strong>Χαρούμενα γενέθλια</strong></div>
+<div class="languagePhrase"><span>Gujarati</span><strong>Janmadivasa nī śubhakāmanā</strong></div>
+<div class="languagePhrase"><span>Haitian Creole</span><strong>Bòn fèt</strong></div>
+<div class="languagePhrase"><span>Hausa</span><strong>Barka da ranar haihuwa</strong></div>
+<div class="languagePhrase"><span>Hawaiian</span><strong>Hauʻoli Lā Hānau</strong></div>
+<div class="languagePhrase"><span>Hindi</span><strong>Janmadin mubaarak</strong></div>
+<div class="languagePhrase"><span>Hmong</span><strong>Zoo siab hnub yug</strong></div>
+<div class="languagePhrase"><span>Hungarian</span><strong>Boldog születésnapot</strong></div>
+<div class="languagePhrase"><span>Icelandic</span><strong>Til hamingju með afmælið</strong></div>
+<div class="languagePhrase"><span>Igbo</span><strong>Ezi ncheta ọmụmụ</strong></div>
+<div class="languagePhrase"><span>Indonesian</span><strong>Selamat ulang tahun</strong></div>
+<div class="languagePhrase"><span>Irish</span><strong>Lá breithe shona duit</strong></div>
+<div class="languagePhrase"><span>Italian</span><strong>Buon compleanno</strong></div>
+<div class="languagePhrase"><span>Japanese</span><strong>お誕生日おめでとうございます</strong></div>
+<div class="languagePhrase"><span>Javanese</span><strong>Sugeng tanggap warsa</strong></div>
+<div class="languagePhrase"><span>Kannada</span><strong>Janmadinada śubhāśayagaḷu</strong></div>
+<div class="languagePhrase"><span>Kazakh</span><strong>Twğan küniñ quttı bolsın</strong></div>
+<div class="languagePhrase"><span>Khmer</span><strong>Rikreay thngai kamnaet</strong></div>
+<div class="languagePhrase"><span>Kinyarwanda</span><strong>Isabukuru nziza</strong></div>
+<div class="languagePhrase"><span>Korean</span><strong>생일 축하해요</strong></div>
+<div class="languagePhrase"><span>Kurdish</span><strong>Rojbûna te pîroz be</strong></div>
+<div class="languagePhrase"><span>Kyrgyz</span><strong>Tuulgan kunuŋuz menen kuttuktaym</strong></div>
+<div class="languagePhrase"><span>Lao</span><strong>Suk san van koed</strong></div>
+<div class="languagePhrase"><span>Latvian</span><strong>Daudz laimes dzimšanas dienā</strong></div>
+<div class="languagePhrase"><span>Lithuanian</span><strong>Su gimtadieniu</strong></div>
+<div class="languagePhrase"><span>Luxembourgish</span><strong>Alles Guddes fir de Gebuertsdag</strong></div>
+<div class="languagePhrase"><span>Macedonian</span><strong>Sreḱen rodenden</strong></div>
+<div class="languagePhrase"><span>Malagasy</span><strong>Tratry ny tsingerintaona nahaterahana</strong></div>
+<div class="languagePhrase"><span>Malay</span><strong>Selamat Hari lahir</strong></div>
+<div class="languagePhrase"><span>Malayalam</span><strong>Janmadināśansakaḷ</strong></div>
+<div class="languagePhrase"><span>Maori</span><strong>Kia rā whānau</strong></div>
+<div class="languagePhrase"><span>Marathi</span><strong>Vāḍhadivasācyā hārdika śubhēcchā</strong></div>
+<div class="languagePhrase"><span>Mongolian</span><strong>Törsön ödriin mend</strong></div>
+<div class="languagePhrase"><span>Nepali</span><strong>Janmadinakō śubhakāmanā</strong></div>
+<div class="languagePhrase"><span>Norwegian</span><strong>Gratulerer med dagen</strong></div>
+<div class="languagePhrase"><span>Nyanja</span><strong>Tsiku labwino lobadwa</strong></div>
+<div class="languagePhrase"><span>Persian</span><strong>تولدت مبارک</strong></div>
+<div class="languagePhrase"><span>Polish</span><strong>Wszystko najlepszego z okazji urodzin</strong></div>
+<div class="languagePhrase"><span>Portuguese</span><strong>Feliz Aniversário</strong></div>
+<div class="languagePhrase"><span>Punjabi</span><strong>Janamadina mubāraka</strong></div>
+<div class="languagePhrase"><span>Romanian</span><strong>La mulți ani</strong></div>
+<div class="languagePhrase"><span>Russian</span><strong>С днём рождения</strong></div>
+<div class="languagePhrase"><span>Samoan</span><strong>Manuia le aso fanau</strong></div>
+<div class="languagePhrase"><span>Scottish Gaelic</span><strong>Co-là-breith math</strong></div>
+<div class="languagePhrase"><span>Serbian</span><strong>Srećan rođendan</strong></div>
+<div class="languagePhrase"><span>Shona</span><strong>Bhavhadhe rinofadza</strong></div>
+<div class="languagePhrase"><span>Sinhala</span><strong>Suba upandinayak vēvā</strong></div>
+<div class="languagePhrase"><span>Slovak</span><strong>Šťastné narodeniny</strong></div>
+<div class="languagePhrase"><span>Slovenian</span><strong>Vse najboljše</strong></div>
+<div class="languagePhrase"><span>Somali</span><strong>Dhalasho Wacan</strong></div>
+<div class="languagePhrase"><span>Southern Sotho</span><strong>Letsatsi le monate la tsoalo</strong></div>
+<div class="languagePhrase"><span>Spanish</span><strong>¡Feliz cumpleaños!</strong></div>
+<div class="languagePhrase"><span>Sundanese</span><strong>Wilujeng tepang taun</strong></div>
+<div class="languagePhrase"><span>Swahili</span><strong>Heri ya siku ya kuzaliwa</strong></div>
+<div class="languagePhrase"><span>Swedish</span><strong>Grattis på födelsedagen</strong></div>
+<div class="languagePhrase"><span>Tagalog</span><strong>Maligayang kaarawan</strong></div>
+<div class="languagePhrase"><span>Tajik</span><strong>Zodrūz muborak</strong></div>
+<div class="languagePhrase"><span>Tamil</span><strong>Piṟantanāḷ vāḻttukkaḷ</strong></div>
+<div class="languagePhrase"><span>Tatar</span><strong>Туган көн белән</strong></div>
+<div class="languagePhrase"><span>Telugu</span><strong>Puṭṭinarōju śubhākāṅkṣalu</strong></div>
+<div class="languagePhrase"><span>Thai</span><strong>สุขสันต์วันเกิด</strong></div>
+<div class="languagePhrase"><span>Turkish</span><strong>İyi ki doğdun</strong></div>
+<div class="languagePhrase"><span>Turkmen</span><strong>Doglan günüň bilen</strong></div>
+<div class="languagePhrase"><span>Ukrainian</span><strong>З днем народження</strong></div>
+<div class="languagePhrase"><span>Uzbek</span><strong>Tug‘ilgan kuning bilan</strong></div>
+<div class="languagePhrase"><span>Vietnamese</span><strong>Chúc mừng sinh nhật</strong></div>
+<div class="languagePhrase"><span>Welsh</span><strong>Penblwydd hapus</strong></div>
+<div class="languagePhrase"><span>Western Frisian</span><strong>Lokkige jierdei</strong></div>
+<div class="languagePhrase"><span>Xhosa</span><strong>Usuku lokuzalwa olumnandi</strong></div>
+<div class="languagePhrase"><span>Yiddish</span><strong>Mzl deyn geburstog</strong></div>
+<div class="languagePhrase"><span>Yoruba</span><strong>O ku ojo ibi</strong></div>
+<div class="languagePhrase"><span>Zulu</span><strong>Usuku olumnandi lokuzalwa</strong></div></div>
+      <div class="languageWords" id="specialWords"><div class="languagePhrase"><span>English</span><strong>You are special to me</strong></div>
+<div class="languagePhrase"><span>French</span><strong>Tu es spéciale pour moi</strong></div>
+<div class="languagePhrase"><span>Spanish</span><strong>Eres especial para mí</strong></div>
+<div class="languagePhrase"><span>Italian</span><strong>Sei speciale per me</strong></div>
+<div class="languagePhrase"><span>German</span><strong>Du bist etwas Besonderes für mich</strong></div>
+<div class="languagePhrase"><span>Portuguese</span><strong>Você é especial para mim</strong></div>
+<div class="languagePhrase"><span>Japanese</span><strong>あなたは私にとって特別です</strong></div>
+<div class="languagePhrase"><span>Korean</span><strong>너는 나에게 특별해</strong></div>
+<div class="languagePhrase"><span>Mandarin Chinese</span><strong>你对我来说很特别</strong></div>
+<div class="languagePhrase"><span>Arabic</span><strong>أنت مميز بالنسبة لي</strong></div>
+<div class="languagePhrase"><span>Russian</span><strong>Ты особенная для меня</strong></div>
+<div class="languagePhrase"><span>Turkish</span><strong>Benim için özelsin</strong></div>
+<div class="languagePhrase"><span>Hindi</span><strong>तुम मेरे लिए खास हो</strong></div>
+<div class="languagePhrase"><span>Greek</span><strong>Είσαι ξεχωριστή για μένα</strong></div>
+<div class="languagePhrase"><span>Dutch</span><strong>Je bent speciaal voor mij</strong></div>
+<div class="languagePhrase"><span>Swedish</span><strong>Du är speciell för mig</strong></div>
+<div class="languagePhrase"><span>Polish</span><strong>Jesteś dla mnie wyjątkowa</strong></div>
+<div class="languagePhrase"><span>Ukrainian</span><strong>Ти особлива для мене</strong></div>
+<div class="languagePhrase"><span>Hebrew</span><strong>את מיוחדת בשבילי</strong></div>
+<div class="languagePhrase"><span>Indonesian</span><strong>Kamu spesial bagiku</strong></div></div>
+    </div>
+    <div class="finalMessage" id="finalMessage">
+      <span>Em mais de cem línguas.</span>
+      <h3>Eu te amo.</h3>
+      <p>E mesmo dizendo de todas essas formas,<br>algumas coisas ainda parecem grandes demais para caber em palavras.</p>
+      <button class="finalContinue" id="finalContinue">continuar ↓</button>
+    </div>
+    <div class="birthdayMessage" id="birthdayMessage">
+      <span>e hoje, em todas elas...</span>
+      <h3>Feliz aniversário.</h3>
+      <p>Que o mundo inteiro pudesse te desejar um dia tão bonito quanto você merece.</p>
+      <button class="finalContinue" id="birthdayContinue">ainda tem uma coisa ↓</button>
+    </div>
+    <div class="letterReveal" id="letterReveal">
+      <span class="sectionIndex">a última coisa</span>
+      <h3>Eu queria te dizer algumas coisas.</h3>
+      <div class="finalLetter"><p>Eu queria te dizer que, quando soube que seria seu aniversário, tive vontade de te dar mil coisas.</p>
+<p>Tudo aquilo que você nunca imaginou receber.</p>
+<p>Até mesmo as estrelas que brilham no céu, se eu pudesse alcançá-las.</p>
+<p>Tudo para te fazer sorrir. Para te fazer sentir especial. Mas não apenas especial por ser um dia especial... e sim porque esse é o seu dia. O momento que é seu. Um dia em que eu queria poder colocar o mundo inteiro em silêncio só para que toda a atenção pudesse ser sua.</p>
+<p>E talvez, no fim, eu tenha percebido que existem coisas que eu gostaria de te dar que não cabem em lugar nenhum.</p>
+<p>Por isso escrevi.</p>
+<p>Porque há coisas que eu gostaria de te dizer.</p>
+<p>Eu te vejo nos minuciosos detalhes.</p>
+<p>Na sua risada, que só de ouvir já consegue colocar um sorriso no meu rosto. Para mim, ela é quase uma canção, daquelas que a gente escuta uma vez e nunca mais esquece. Uma felicidade pequena que o tempo não consegue levar embora.</p>
+<p>Eu vejo você até quando erra as palavras.</p>
+<p>E talvez eu goste justamente disso.</p>
+<p>Porque seus erros deixam tudo mais engraçado, mais espontâneo, mais único.</p>
+<p>Mais você.</p>
+<p>Eu lembro das fotos que você me mandava, do seu jeito de mostrar a língua para a câmera, sem saber que aquilo conseguia derreter completamente meu coração. Lembro de como você ama doces, das músicas que gosta de ouvir, dos livros que ama ler.</p>
+<p>São coisas tão pequenas.</p>
+<p>Mas quando penso em você, são justamente essas pequenas coisas que aparecem primeiro.</p>
+<p>E eu acho bonito isso.</p>
+<p>Porque amar alguém talvez seja começar a enxergar importância naquilo que, para o resto do mundo, poderia passar despercebido.</p>
+<p>Eu lembro de você ficando lerdinha de sono, falando comigo sem nem perceber direito o que estava dizendo. Lembro dos seus “eu te amo” com aquela voz fofinha que eu poderia ouvir mil vezes e ainda assim sorriria como se fosse a primeira.</p>
+<p>Lembro das nossas calls.</p>
+<p>Das noites em que a gente ia dormir conversando, mesmo quando já não existia assunto.</p>
+<p>E era engraçado, porque nem precisava existir.</p>
+<p>Eu só gostava de estar ali.</p>
+<p>Com você.</p>
+<p>Às vezes, bastava ouvir sua voz.</p>
+<p>Às vezes, nem isso.</p>
+<p>Bastava saber que você estava do outro lado.</p>
+<p>E até seu “ai vey”, que começava tantos dos seus áudios, acabou virando uma coisa preciosa para mim.</p>
+<p>Talvez você nem imagine quantas dessas pequenas coisas eu guardei.</p>
+<p>Mas eu guardei.</p>
+<p>Guardei cada risada, cada conversa, cada choro, cada sorriso e cada silêncio.</p>
+<p>Porque, quando penso em nós, eu não penso apenas nos grandes momentos.</p>
+<p>Eu penso nos detalhes.</p>
+<p>E talvez sejam eles que tenham feito você morar tanto dentro das minhas lembranças.</p>
+<p>E quanto mais eu penso neles, mais percebo outra coisa que admiro em você.</p>
+<p>O jeito como você ama.</p>
+<p>O jeito como você cuida.</p>
+<p>Quando eu te vejo sendo gentil com aquilo que ama, quando vejo você tentando melhorar as coisas, se esforçando, tentando fazer tudo dar certo, eu fico admirado.</p>
+<p>Talvez para você seja apenas você sendo você.</p>
+<p>Mas para mim existe algo muito bonito nisso.</p>
+<p>Porque existem pessoas que fazem coisas boas esperando que alguém veja.</p>
+<p>E existem pessoas que simplesmente fazem.</p>
+<p>Você é assim.</p>
+<p>Até quando eu te conto alguma coisa completamente besta, você presta atenção.</p>
+<p>Você faz aquilo parecer importante.</p>
+<p>Como se, por ter vindo de mim, já merecesse um lugar.</p>
+<p>E eu não sei se você percebe o quanto isso é bonito.</p>
+<p>Sua maneira de cuidar.</p>
+<p>Sua responsabilidade afetiva.</p>
+<p>Seu jeito de estar presente.</p>
+<p>Tudo isso é uma dádiva para quem tem a sorte de te conhecer.</p>
+<p>E eu agradeço.</p>
+<p>Agradeço por você ser você.</p>
+<p>Por ter nascido.</p>
+<p>Por ter existido no mesmo mundo que eu.</p>
+<p>E, principalmente, por algum acaso bonito da vida, ter cruzado o meu caminho.</p>
+<p>Porque foi com você que comecei a sentir vontade de mostrar partes de mim que eu costumava esconder.</p>
+<p>De contar coisas.</p>
+<p>De falar sobre a minha vida.</p>
+<p>De deixar alguém entrar.</p>
+<p>Existe uma confiança entre nós que eu não sei explicar direito.</p>
+<p>Só sei que existe.</p>
+<p>E talvez seja por isso que eu queira te contar cada vez mais.</p>
+<p>Quero te encontrar nos meus próprios sorrisos.</p>
+<p>Quero reconhecer você nas pequenas coisas do meu dia.</p>
+<p>Porque existe algo em você que me encanta ainda mais quando você não está tentando encantar ninguém.</p>
+<p>Quando você não está pensando no que dizer.</p>
+<p>Quando não está tentando ser engraçada, bonita ou especial.</p>
+<p>Quando simplesmente está sendo você.</p>
+<p>É nesses momentos que eu olho e penso no quanto você é incrível.</p>
+<p>Às vezes eu queria poder te emprestar meus olhos por cinco minutos.</p>
+<p>Só cinco.</p>
+<p>Para que você pudesse enxergar a menina que eu vejo.</p>
+<p>Para que pudesse entender por que eu fico assim quando olho para você.</p>
+<p>Talvez você entendesse.</p>
+<p>Talvez não.</p>
+<p>Mas eu queria que pudesse ver.</p>
+<p>Porque antes de existir tudo isso...</p>
+<p>existia apenas uma menina de cabelo curto entrando em uma call quase escondida.</p>
+<p>Eu lembro daquele dia.</p>
+<p>Uma call aleatória.</p>
+<p>Você ali.</p>
+<p>E eu curioso sobre aquela menina que eu mal conhecia.</p>
+<p>Eu não sabia o que viria depois.</p>
+<p>Não sabia quantas noites ainda passaríamos juntos.</p>
+<p>Quantas vezes iríamos rir.</p>
+<p>Quantas coisas ainda contaríamos um ao outro.</p>
+<p>Eu não sabia que aquela menina acabaria se tornando alguém tão importante.</p>
+<p>E então vieram os primeiros momentos.</p>
+<p>As risadas.</p>
+<p>Os vídeos.</p>
+<p>As palavras de amor.</p>
+<p>As coisas que fomos dedicando um ao outro.</p>
+<p>E, sem perceber, fomos construindo uma história.</p>
+<p>Se 333 pode significar alinhamento entre corpos, talvez nós sejamos um pouco disso também.</p>
+<p>Dois caminhos que se encontraram.</p>
+<p>Duas pessoas que, em algum momento, começaram a carregar um pouco uma da outra.</p>
+<p>E talvez seja estranho dizer isso, mas às vezes sinto que nossos olhares se encontram mesmo quando não estamos olhando.</p>
+<p>Como se existisse uma parte sua que sabe chegar até mim mesmo quando você está longe.</p>
+<p>E se eu pudesse escolher uma frase do Matuê para guardar dentro dessa carta, seria:</p>
+<p>“Eu troco o mundo inteiro pra passar o dia com você.”</p>
+<p>Porque hoje eu nem preciso de uma máquina do tempo para voltar para você.</p>
+<p>Você já está aqui.</p>
+<p>Nas lembranças.</p>
+<p>Nas músicas.</p>
+<p>Nas noites.</p>
+<p>Nas palavras.</p>
+<p>Nos pequenos detalhes que me fizeram gostar de você.</p>
+<p>E até naquele silêncio das calls em que você dormia.</p>
+<p>Eu lembro de ficar ali.</p>
+<p>Ouvindo sua respiração.</p>
+<p>Enquanto você dormia e eu simplesmente ficava.</p>
+<p>Era um silêncio tão simples.</p>
+<p>Mas, de algum jeito, me fazia feliz.</p>
+<p>Eu não precisava falar.</p>
+<p>Você não precisava falar.</p>
+<p>Você só precisava estar ali.</p>
+<p>E eu queria estar também.</p>
+<p>Talvez tenha sido nesses momentos que percebi que não gostava apenas das partes bonitas.</p>
+<p>Eu gostava da paz de estar perto de você.</p>
+<p>Gostava de poder ser eu.</p>
+<p>Sem precisar pensar tanto.</p>
+<p>Sem precisar esconder cada parte estranha, sensível ou boba que existe em mim.</p>
+<p>Desde que te conheci, eu me senti um pouco mais livre.</p>
+<p>Um pouco mais feliz.</p>
+<p>Como aquela criança que sempre teve medo de ser diferente e, de repente, percebeu que talvez não precisasse ter medo.</p>
+<p>Você me mostrou que eu podia ser eu mesmo.</p>
+<p>E que talvez isso já fosse suficiente.</p>
+<p>Existem pessoas que passam pela nossa vida.</p>
+<p>E existem pessoas que deixam a vida um pouco diferente depois que passam.</p>
+<p>Você é assim.</p>
+<p>Você chega e o ambiente parece ficar mais leve.</p>
+<p>Mais engraçado.</p>
+<p>Como se a vida ganhasse uma música baixinha de fundo e, por alguns instantes, tudo ficasse mais fácil.</p>
+<p>Eu gosto de me perder um pouco em você.</p>
+<p>Gosto de perder o sono com sua voz.</p>
+<p>Gosto de não conseguir dormir antes de rir contigo.</p>
+<p>Porque até as coisas mais simples ficam diferentes quando são com você.</p>
+<p>E se hoje você me ama, quero que saiba que existe uma parte de quem eu sou que sempre vai agradecer pela maneira como você foi comigo.</p>
+<p>Pela sua gentileza.</p>
+<p>Pelo seu cuidado.</p>
+<p>Por ter sido você.</p>
+<p>Você foi uma estrela em um céu que algumas vezes parecia escuro demais.</p>
+<p>E se algum dia essa estrela esquecer que brilha, eu quero estar aqui para lembrar.</p>
+<p>Se algum dia você esquecer quem é, eu quero te lembrar.</p>
+<p>Quero te lembrar que você é uma menina sensacional.</p>
+<p>Gentil.</p>
+<p>Engraçada.</p>
+<p>Uma menina que consegue colocar carinho até nas próprias palavras.</p>
+<p>Eu poderia passar horas lembrando das pequenas coisas que você fez por mim.</p>
+<p>Mas acho que amor nunca esteve apenas nas grandes coisas.</p>
+<p>Às vezes amor era simplesmente você escolher ficar.</p>
+<p>Ficar nos dias difíceis.</p>
+<p>Nos dias felizes.</p>
+<p>Nos dias chuvosos.</p>
+<p>Nos dias em que a cabeça pesava.</p>
+<p>Nos dias em que faltava um abraço.</p>
+<p>E mesmo sem nunca termos conseguido nos abraçar de verdade, você encontrou uma maneira de me abraçar.</p>
+<p>Você me colocou dentro da sua vida.</p>
+<p>Me fez seu coelhinho.</p>
+<p>E se eu tiver que pular para chegar mais perto de você, então eu quero continuar pulando.</p>
+<p>Você é a menina que ama Matuê com todas as forças.</p>
+<p>A menina que ama seus romances.</p>
+<p>A menina que gosta da própria paz.</p>
+<p>E, sem perceber, se tornou também a menina que me dá paz.</p>
+<p>Você coloca um sorriso no meu rosto.</p>
+<p>E se algum dia você não conseguir enxergar aquilo que eu enxergo em você, eu queria poder te levar pelas minhas memórias.</p>
+<p>Te mostrar o mundo pelos meus olhos.</p>
+<p>Te mostrar cada momento.</p>
+<p>Cada detalhe.</p>
+<p>Cada pequena coisa.</p>
+<p>Até você entender por que tantas vezes, quando penso em amor, o seu nome acaba aparecendo.</p>
+<p>Porque você se tornou uma das formas mais bonitas que eu conheço de falar sobre ele.</p>
+<p>E hoje é seu aniversário.</p>
+<p>E eu não queria apenas dizer “feliz aniversário”.</p>
+<p>Essas duas palavras parecem pequenas demais.</p>
+<p>Então eu desejo muito mais.</p>
+<p>Desejo que você realize aqueles sonhos que tinha quando era criança.</p>
+<p>Até aqueles que esqueceu.</p>
+<p>Até aqueles que um dia desistiu de tentar.</p>
+<p>Desejo que conheça tudo aquilo que o mundo ainda tem para te mostrar.</p>
+<p>As coisas novas.</p>
+<p>As coisas bonitas.</p>
+<p>As coisas que ainda nem imaginamos.</p>
+<p>Desejo que seu sorriso nunca desista de aparecer.</p>
+<p>Que por onde você passe encontre pessoas que façam bem ao seu coração.</p>
+<p>Que encontre amizades verdadeiras.</p>
+<p>Que tenha histórias para contar.</p>
+<p>Que tenha noites que nunca queira esquecer.</p>
+<p>Que tenha tantos momentos felizes que, um dia, quando olhar para trás, os momentos tristes pareçam apenas pequenas sombras diante de tudo aquilo que viveu.</p>
+<p>Eu desejo que você seja feliz.</p>
+<p>Muito.</p>
+<p>Porque especial você já é.</p>
+<p>E talvez seja isso que estou tentando fazer com todas essas palavras.</p>
+<p>Deixar aqui um desejo.</p>
+<p>Quase como uma pequena profecia.</p>
+<p>Como se cada palavra pudesse virar uma estrela e ficar acesa em algum lugar do seu futuro.</p>
+<p>E se algum dia você olhar para o céu e encontrar uma brilhando um pouco mais forte, eu espero que se lembre de que um dia alguém desejou que você tivesse luz suficiente para nunca esquecer o quanto é amada.</p>
+<p>E depois de tudo isso...</p>
+<p>sobramos nós.</p>
+<p>Só nós.</p>
+<p>Nós que sabemos reconhecer o sorriso um do outro quase de cor.</p>
+<p>Nós que conhecemos a voz capaz de fazer o coração do outro acelerar.</p>
+<p>Nós das risadas em call que diziam mil coisas sem precisar dizer nada.</p>
+<p>Nós que aprendemos nosso próprio jeito de dizer “eu te amo”.</p>
+<p>Nós que começamos como duas pessoas em uma call aleatória e, sem perceber, acabamos deixando pedaços um no outro.</p>
+<p>E talvez seja isso que eu mais gosto em nossa história.</p>
+<p>Ela não começou com algo grandioso.</p>
+<p>Começou pequena.</p>
+<p>Uma call.</p>
+<p>Uma menina de cabelo curto.</p>
+<p>Um menino curioso.</p>
+<p>E, de repente, existiam noites, risadas, músicas, palavras, saudades, carinho e uma história inteira.</p>
+<p>Uma história que eu guardo.</p>
+<p>Esse texto é sobre você.</p>
+<p>Sobre a menina que conheci.</p>
+<p>Sobre a menina que conheço.</p>
+<p>Sobre cada versão sua que encontrei pelo caminho.</p>
+<p>E sobre todas aquelas que ainda quero conhecer.</p>
+<p>Cada palavra aqui carrega um pouco de amor.</p>
+<p>Um pouco de saudade.</p>
+<p>Um pouco de dedicação.</p>
+<p>E muitas lágrimas felizes por ter você na minha vida.</p>
+<p>Eu queria guardar tudo isso em algum lugar que o tempo não pudesse apagar.</p>
+<p>Então guardei aqui.</p>
+<p>Nas palavras.</p>
+<p>Nas memórias.</p>
+<p>Em mim.</p>
+<p>Obrigado por todas as noites.</p>
+<p>Por todas as risadas.</p>
+<p>Por todas as conversas.</p>
+<p>Por todos os “ai vey”.</p>
+<p>Por todos os “eu te amo”.</p>
+<p>Por cada pequena coisa que talvez você nem saiba que eu guardei.</p>
+<p>E, se você esquecer todo o resto que escrevi, guarda só isso:</p>
+<p>**obrigado por existir exatamente do jeito que você existe.**</p>
+<p>Feliz aniversário, meu amor.</p>
+<p>E que, enquanto o tempo continuar passando, você nunca esqueça que, em algum lugar das minhas memórias, existe uma menina de cabelo curto entrando em uma call quase escondida...</p>
+<p>sem imaginar que, naquele instante, estava começando uma das histórias mais bonitas que eu teria para contar.</p></div>
+      <div class="letterEnd">
+        <span>fim.</span>
+        <strong>♡</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer>
+  um universo inteiro, só nosso. ♡
+</footer>
+
+
+</main>
+
+
+<script>
+
+/* =========================================================
+   ELEMENTOS
+========================================================= */
+
+const lockScreen =
+  document.getElementById("lockScreen");
+
+const transitionScreen =
+  document.getElementById("transitionScreen");
+
+const site =
+  document.getElementById("site");
+
+const passwordInput =
+  document.getElementById("passwordInput");
+
+const enterButton =
+  document.getElementById("enterButton");
+
+const errorMessage =
+  document.getElementById("errorMessage");
+
+const extraHint =
+  document.getElementById("extraHint");
+
+const music =
+  document.getElementById("backgroundMusic");
+
+const musicButton =
+  document.getElementById("musicButton");
+
+const musicPlayer =
+  document.getElementById("musicPlayer");
+
+
+/* =========================================================
+   SENHA
+========================================================= */
+
+let wrongAttempts = 0;
+
+
+function normalizePassword(value){
+
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[’‘´`]/g,"'")
+    .replace(/\s+/g," ");
+
+}
+
+
+function checkPassword(){
+
+  const value =
+    normalizePassword(passwordInput.value);
+
+  const acceptedPasswords = [
+    "je t'aime",
+    "jetaime",
+    "je t aime"
+  ];
+
+
+  if(acceptedPasswords.includes(value)){
+
+    unlockSite();
+
+  }else{
+
+    wrongAttempts++;
+
+    errorMessage.textContent =
+      "não foi dessa vez... tenta pensar na declaração.";
+
+    passwordInput.select();
+
+    if(wrongAttempts >= 2){
+      extraHint.classList.add("visible");
+    }
+
+  }
+
+}
+
+
+function unlockSite(){
+
+  passwordInput.blur();
+
+  lockScreen.style.display = "none";
+
+  transitionScreen.style.display = "flex";
+
+
+  setTimeout(()=>{
+
+    transitionScreen.style.display = "none";
+
+    site.style.display = "block";
+
+    musicPlayer.classList.remove("hidden");
+
+
+    music.play()
+      .then(()=>{
+        musicButton.textContent = "❚❚";
+      })
+      .catch(()=>{
+        musicButton.textContent = "▶";
+      });
+
+
+    startRevealObserver();
+
+    checkBirthday();
+
+    window.scrollTo(0,0);
+
+  },3000);
+
+}
+
+
+enterButton.addEventListener(
+  "click",
+  checkPassword
+);
+
+
+passwordInput.addEventListener(
+  "keydown",
+  event=>{
+
+    if(event.key === "Enter"){
+      checkPassword();
+    }
+
+  }
+);
+
+
+/*
+  No celular não forçamos o teclado.
+  No computador podemos focar automaticamente.
+*/
+
+window.addEventListener("load",()=>{
+
+  if(window.innerWidth > 700){
+
+    setTimeout(()=>{
+      passwordInput.focus();
+    },400);
+
+  }
+
+});
+
+
+/* Gatinho interativo estilo scamp-cat */
+(function () {
+  const cat = document.getElementById('scamp-cat');
+  if (!cat) return;
+
+  // Escolha a cor: gray | ginger | white
+  const SHEET = 'https://raw.githubusercontent.com/LordAizen1/scamp-cat/main/assets/sprites/cat_gray.png';
+  const SCALE = 2;           // 2 = 64px, 1 = 32px, 3 = 96px...
+  const FRAME = 32;
+
+  // Coordenadas exatas tiradas do código do scamp (main.rs)
+  const ANIMS = {
+    wash:        { frames: [[0,1152],[32,1152],[64,1152],[96,1152],[128,1152],[160,1152],[192,1152],[224,1152]], ms: 250 },
+    walkRight:   { frames: [[0,192],[32,192],[64,192],[96,192],[128,192],[160,192],[192,192],[224,192]], ms: 100 },
+    walkLeft:    { frames: [[0,224],[32,224],[64,224],[96,224],[128,224],[160,224],[192,224],[224,224]], ms: 100 },
+    walkUp:      { frames: [[0,160],[32,160],[64,160],[96,160]], ms: 100 },
+    walkDown:    { frames: [[0,128],[32,128],[64,128],[96,128]], ms: 100 },
+    sleepCurl:   { frames: [[0,512]], ms: 1000 },
+    yawn:        { frames: [[0,1024],[32,1024],[64,1024],[96,1024],[128,1024],[160,1024],[192,1024],[224,1024]], ms: 250 },
+    sleepLoaf:   { frames: [[0,384]], ms: 1000 },
+    sleepHead:   { frames: [[0,448]], ms: 1000 },
+    sleepStretch:{ frames: [[0,576]], ms: 1000 },
+    washLie:     { frames: [[0,1216],[32,1216],[64,1216],[96,1216],[128,1216],[160,1216],[192,1216]], ms: 250 },
+    scratch:     { frames: [[0,1280],[32,1280],[64,1280],[96,1280],[128,1280],[160,1280],[192,1280],[224,1280]], ms: 250 },
+  };
+
+  const IDLE_ANIMS = ['wash', 'yawn', 'washLie', 'scratch'];
+  const SLEEP_ANIMS = ['sleepCurl', 'sleepLoaf', 'sleepHead', 'sleepStretch'];
+
+  let x = window.innerWidth - 80;
+  let y = window.innerHeight - 100;
+  let targetX = x, targetY = y;
+  let state = 'idle';
+  let animName = 'wash';
+  let frameIdx = 0;
+  let lastFrame = 0;
+  let idleTicks = 0;
+  let pause = 0;
+
+  cat.style.backgroundImage = `url(${SHEET})`;
+  cat.style.width = `${FRAME * SCALE}px`;
+  cat.style.height = `${FRAME * SCALE}px`;
+  cat.style.backgroundSize = `${352 * SCALE}px ${1696 * SCALE}px`;
+
+  function setFrame() {
+    const anim = ANIMS[animName];
+    const [sx, sy] = anim.frames[frameIdx % anim.frames.length];
+    cat.style.backgroundPosition = `-${sx * SCALE}px -${sy * SCALE}px`;
+  }
+
+  function pickNewTarget() {
+    const maxX = window.innerWidth - FRAME * SCALE - 10;
+    const maxY = window.innerHeight - FRAME * SCALE - 10;
+    targetX = Math.random() * maxX;
+    targetY = Math.random() * maxY;
+    pause = Math.random() < 0.25 ? 250 + Math.random() * 250 : 20 + Math.random() * 40;
+  }
+
+  function update(now) {
+    // animação de frames
+    const anim = ANIMS[animName];
+    if (now - lastFrame > anim.ms) {
+      frameIdx = (frameIdx + 1) % anim.frames.length;
+      lastFrame = now;
+      setFrame();
+    }
+
+    if (pause > 0) {
+      pause--;
+      requestAnimationFrame(update);
+      return;
+    }
+
+    const dx = targetX - x;
+    const dy = targetY - y;
+    const dist = Math.hypot(dx, dy);
+
+    if (dist < 2) {
+      // chegou
+      state = 'idle';
+      idleTicks++;
+      if (idleTicks > 80) {
+        animName = SLEEP_ANIMS[Math.floor(Math.random() * SLEEP_ANIMS.length)];
+      } else {
+        animName = IDLE_ANIMS[Math.floor(Math.random() * IDLE_ANIMS.length)];
+      }
+      pickNewTarget();
+    } else {
+      idleTicks = 0;
+      const speed = 1.2;
+      if (Math.abs(dx) > Math.abs(dy)) {
+        state = dx > 0 ? 'walkRight' : 'walkLeft';
+        animName = state;
+        x += Math.sign(dx) * speed;
+      } else {
+        state = dy > 0 ? 'walkDown' : 'walkUp';
+        animName = state;
+        y += Math.sign(dy) * speed;
+      }
+    }
+
+    cat.style.left = `${x}px`;
+    cat.style.top = `${y}px`;
+    requestAnimationFrame(update);
+  }
+
+  // inicia
+  pickNewTarget();
+  setFrame();
+  requestAnimationFrame(update);
+
+  // reage a resize
+  window.addEventListener('resize', () => {
+    x = Math.min(x, window.innerWidth - FRAME * SCALE);
+    y = Math.min(y, window.innerHeight - FRAME * SCALE);
+  });
+})();
+
+/* =========================================================
+   MÚSICA
+========================================================= */
+
+musicButton.addEventListener(
+  "click",
+  async ()=>{
+
+    if(music.paused){
+      try{
+        await music.play();
+        musicButton.textContent = "❚❚";
+      }catch(error){
+        console.warn("Não foi possível iniciar a música:", error);
+        musicButton.textContent = "▶";
+      }
+    }else{
+      music.pause();
+      musicButton.textContent = "▶";
+    }
+  }
+);
+
+music.addEventListener("play", ()=>{
+  musicButton.textContent = "❚❚";
+});
+
+music.addEventListener("pause", ()=>{
+  musicButton.textContent = "▶";
+});
+
+music.addEventListener("error", ()=>{
+  musicButton.textContent = "▶";
+  console.error("Erro ao carregar assets/get-you.mp3", music.error);
+});
+
+
+/* =========================================================
+   SEGREDOS
+========================================================= */
+
+document
+  .querySelectorAll(".secretCard")
+  .forEach(card=>{
+
+    const button =
+      card.querySelector(".secretOpen");
+
+    button.addEventListener(
+      "click",
+      ()=>{
+
+        card.classList.toggle("revealed");
+
+      }
+    );
+
+  });
+
+
+/* =========================================================
+   ANIMAÇÃO AO ROLAR
+========================================================= */
+
+function startRevealObserver(){
+
+  const observer =
+    new IntersectionObserver(
+      entries=>{
+
+        entries.forEach(entry=>{
+
+          if(entry.isIntersecting){
+
+            entry.target
+              .classList
+              .add("visible");
+
+            observer.unobserve(entry.target);
+
+          }
+
+        });
+
+      },
+      {
+        threshold:.12
+      }
+    );
+
+
+  document
+    .querySelectorAll(".reveal")
+    .forEach(element=>{
+
+      observer.observe(element);
+
+    });
+
+}
+
+
+/* =========================================================
+   CONTAGEM REGRESSIVA
+========================================================= */
+
+const birthdayDate =
+  new Date(
+    "2026-09-21T00:00:00-03:00"
+  );
+
+
+function updateCountdown(){
+
+  const now =
+    new Date();
+
+  const difference =
+    birthdayDate - now;
+
+
+  if(difference <= 0){
+
+    document.getElementById("days")
+      .textContent = "00";
+
+    document.getElementById("hours")
+      .textContent = "00";
+
+    document.getElementById("minutes")
+      .textContent = "00";
+
+    document.getElementById("seconds")
+      .textContent = "00";
+
+    checkBirthday();
+
+    return;
+
+  }
+
+
+  const days =
+    Math.floor(
+      difference /
+      (1000 * 60 * 60 * 24)
+    );
+
+
+  const hours =
+    Math.floor(
+      (
+        difference /
+        (1000 * 60 * 60)
+      ) % 24
+    );
+
+
+  const minutes =
+    Math.floor(
+      (
+        difference /
+        (1000 * 60)
+      ) % 60
+    );
+
+
+  const seconds =
+    Math.floor(
+      (
+        difference /
+        1000
+      ) % 60
+    );
+
+
+  document.getElementById("days")
+    .textContent =
+      String(days).padStart(2,"0");
+
+  document.getElementById("hours")
+    .textContent =
+      String(hours).padStart(2,"0");
+
+  document.getElementById("minutes")
+    .textContent =
+      String(minutes).padStart(2,"0");
+
+  document.getElementById("seconds")
+    .textContent =
+      String(seconds).padStart(2,"0");
+
+}
+
+
+updateCountdown();
+
+setInterval(
+  updateCountdown,
+  1000
+);
+
+
+/* =========================================================
+   LIBERAÇÃO DO DIA 21
+========================================================= */
+
+function checkBirthday(){
+
+  const now =
+    new Date();
+
+
+  if(now >= birthdayDate){
+
+    const lockedArea =
+      document.getElementById("lockedArea");
+
+    const birthdayWorld =
+      document.getElementById("birthdayWorld");
+
+
+    lockedArea.style.display = "none";
+
+    birthdayWorld.classList.add("active");
+
+  }
+
+}
+
+</script>
+
+
+<script>
+/*
+  Hello Kitty pixel art adaptada do Pen de danixia-torres:
+  https://codepen.io/danixia-torres/pen/PoOprYX
+  A arte original é desenhada por retângulos de 20px; aqui ela é
+  desenhada no canvas original e exibida responsivamente no scrapbook.
+*/
+(function(){
+  const canvas = document.getElementById('helloKittyPixel');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if(!ctx) return;
+
+  ctx.imageSmoothingEnabled = false;
+  ctx.clearRect(0,0,1000,1000);
+
+  const pink = '#EDB1CA';
+  const yellow = '#FFDE00';
+  const brown = '#B18977';
+
+  ctx.fillStyle = brown;
+  const brownRects = [
+    [500,100,120,20],[480,80,20,20],[400,60,80,20],[360,80,40,20],[380,100,20,20],
+    [360,120,60,20],[420,140,40,40],[440,140,20,20],[360,200,60,20],[340,140,20,60],
+    [320,180,20,20],[340,220,20,20],[300,240,40,20],[280,220,20,20],[260,140,20,80],
+    [280,120,60,20],[280,80,20,40],[300,60,60,20],[620,80,80,20],[700,100,20,40],
+    [720,140,20,40],[700,180,20,40],[720,220,20,80],[700,300,60,20],[760,320,20,20],
+    [720,320,20,40],[680,360,60,20],[740,380,20,20],[700,380,20,20],[680,400,20,20],
+    [640,420,40,20],[260,360,60,20],[240,380,20,20],[280,380,20,20],[300,400,20,20],
+    [280,420,20,20],[320,420,40,20],[360,440,280,20],[260,320,20,40],[240,300,60,20],
+    [220,320,20,20],[260,240,20,60],[360,340,40,20],[600,340,40,20],[500,120,20,60],
+    [420,180,80,20]
+  ];
+  brownRects.forEach(r=>ctx.fillRect(...r));
+
+  ctx.fillStyle = pink;
+  const pinkRects = [
+    [340,380,40,20],[620,380,40,20],
+    [400,80,80,40],[420,120,80,20],[480,100,20,20],[460,140,40,20],[440,160,60,20],
+    [360,140,60,60],[280,140,60,40],[280,180,40,40],[320,200,40,20],[300,220,40,20]
+  ];
+  pinkRects.forEach(r=>ctx.fillRect(...r));
+
+  ctx.fillStyle = yellow;
+  ctx.fillRect(480,380,40,20);
+})();
+</script>
+
+
+<script>
+/* =========================================================
+   ESTRELAS CADENTES — física adaptada do código Pygame enviado
+   Mantém o céu inteiro independente do conteúdo do site.
+========================================================= */
+(function(){
+  const canvas=document.getElementById('fallingStars');
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  if(!ctx) return;
+  let W=0,H=0,dpr=1,shooting=[];
+  let bgStars=[];
+  const reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+
+  function resize(){
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    W=innerWidth; H=innerHeight;
+    canvas.width=Math.floor(W*dpr); canvas.height=Math.floor(H*dpr);
+    canvas.style.width=W+'px'; canvas.style.height=H+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    bgStars=Array.from({length:reduce?80:200},()=>({
+      x:Math.random()*W,y:Math.random()*H,
+      r:[1,1,1,1,1.5,2][Math.floor(Math.random()*6)],
+      a:.25+Math.random()*.7,phase:Math.random()*Math.PI*2,speed:.7+Math.random()*1.8
+    }));
+  }
+
+  function createShootingStar(){
+    const x=Math.random()*(W*.8)+W*.2;
+    const y=Math.random()*(H*.3)-50;
+    return {x,y,vel:15+Math.random()*9,ang:(135+Math.random()*10)*Math.PI/180,comp:80+Math.random()*70,life:0,maxLife:90+Math.random()*35};
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const t=performance.now()/1000;
+
+    // Estrelas pequenas do céu, equivalentes ao campo de estrelas do Pygame.
+    for(const s of bgStars){
+      const twinkle=.72+.28*Math.sin(t*s.speed+s.phase);
+      ctx.globalAlpha=s.a*twinkle;
+      ctx.fillStyle='#ffffff';
+      ctx.fillRect(Math.round(s.x),Math.round(s.y),s.r,s.r);
+    }
+
+    // No máximo duas estrelas cadentes simultâneas, como no código original.
+    if(!reduce && shooting.length<2 && Math.random()<1/90){
+      shooting.push(createShootingStar());
+    }
+
+    for(let i=shooting.length-1;i>=0;i--){
+      const e=shooting[i];
+      const xEnd=e.x+Math.cos(e.ang)*e.comp;
+      const yEnd=e.y-Math.sin(e.ang)*e.comp;
+      const r=235,g=242,b=255;
+
+      ctx.lineCap='round';
+      ctx.globalAlpha=.18; ctx.strokeStyle=`rgb(${r},${g},${b})`; ctx.lineWidth=7;
+      ctx.beginPath();ctx.moveTo(e.x,e.y);ctx.lineTo(xEnd,yEnd);ctx.stroke();
+      ctx.globalAlpha=.48; ctx.lineWidth=3;
+      ctx.beginPath();ctx.moveTo(e.x,e.y);ctx.lineTo(xEnd,yEnd);ctx.stroke();
+      ctx.globalAlpha=1; ctx.strokeStyle='#fff'; ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(e.x,e.y);ctx.lineTo(xEnd,yEnd);ctx.stroke();
+      ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(e.x,e.y,2,0,Math.PI*2);ctx.fill();
+
+      e.x+=Math.cos(e.ang-Math.PI)*e.vel;
+      e.y-=Math.sin(e.ang-Math.PI)*e.vel;
+      e.life++;
+      if(e.x<-150 || e.y>H+150 || e.life>e.maxLife) shooting.splice(i,1);
+    }
+    ctx.globalAlpha=1;
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  addEventListener('resize',resize,{passive:true});
+  draw();
+})();
+</script>
+
+
+
+<style id="final-clean-background">
+/* =========================================================
+   LIMPEZA FINAL — um único universo preto
+   O fundo antigo não participa mais da composição.
+========================================================= */
+html,body{
+  background:#000 !important;
+  background-image:none !important;
+}
+body::before,body::after{
+  background:none !important;
+  box-shadow:none !important;
+}
+#site,
+#site > section,
+#site > footer,
+.hero,
+.section,
+.storyRiver,
+.musicWorld,
+.scrapbook,
+.letterSection,
+.secretSection,
+.countdownSection,
+.lockedSection,
+footer,
+#birthdayWorld{
+  background:transparent !important;
+  background-image:none !important;
+}
+/* Nenhuma peça da paisagem antiga pode aparecer por trás das estrelas. */
+.moon,.sun,.planet,.mountains,.lake,.mist,.moonReflection,.waterLight,
+.celestePixelSky,.pixelMountain,.pixelCloud,.scrapPixelBackdrop,.birthdaySun,
+.sunOrb{
+  display:none !important;
+  visibility:hidden !important;
+}
+/* O canvas é o único desenho do céu. */
+#fallingStars{
+  position:fixed !important;
+  inset:0 !important;
+  width:100vw !important;
+  height:100vh !important;
+  z-index:0 !important;
+  pointer-events:none !important;
+}
+/* Conteúdo acima do céu. */
+#site{position:relative;z-index:2;}
+#site > *{position:relative;z-index:2;}
+/* O gato fica fora de qualquer stacking context das seções. */
+#scamp-cat{
+  position:fixed !important;
+  left:0;
+  top:0;
+  width:64px !important;
+  height:64px !important;
+  z-index:2147483647 !important;
+  pointer-events:none !important;
+  transform:none;
+  isolation:isolate;
+  image-rendering:pixelated;
+  background-repeat:no-repeat;
+}
+/* Os papéis continuam sendo os únicos blocos claros grandes. */
+.scrapPaper,.letterPaper{background:#fffafc !important;}
+</style>
+
+
+<script>
+/* =========================================================
+   SEQUÊNCIA DA REVELAÇÃO FINAL
+========================================================= */
+(function(){
+  const start=document.getElementById('finalStart');
+  const intro=document.getElementById('finalIntro');
+  const stage=document.getElementById('languageStage');
+  const love=document.getElementById('loveWords');
+  const bday=document.getElementById('birthdayWords');
+  const special=document.getElementById('specialWords');
+  const counter=document.getElementById('languageCounter');
+  const finalMessage=document.getElementById('finalMessage');
+  const birthdayMessage=document.getElementById('birthdayMessage');
+  const letterReveal=document.getElementById('letterReveal');
+  const continueLove=document.getElementById('finalContinue');
+  const continueBirthday=document.getElementById('birthdayContinue');
+  if(!start) return;
+  const groups=[love,bday,special];
+  const positions=[[14,18],[34,12],[57,19],[80,16],[25,34],[49,32],[73,35],[90,43],[12,54],[35,54],[61,53],[82,59],[22,76],[48,73],[70,79],[92,75],[42,91],[62,90]];
+  let started=false;
+  function prep(group){
+    [...group.children].forEach((el,i)=>{
+      const p=positions[i%positions.length];
+      el.style.setProperty('--x',p[0]+'%'); el.style.setProperty('--y',p[1]+'%');
+      el.style.animationDelay=(Math.random()*1.5).toFixed(2)+'s';
+    });
+  }
+  function wait(ms){return new Promise(r=>setTimeout(r,ms));}
+  async function showGroup(group,label){
+    group.style.display='block';
+    const els=[...group.children];
+    const batch=10;
+    for(let i=0;i<els.length;i+=batch){
+      els.slice(i,i+batch).forEach((el,j)=>{
+        el.style.animation='none'; void el.offsetWidth; el.style.animation='phraseIn 3.6s ease forwards'; el.style.animationDelay=(j*.12)+'s';
+      });
+      counter.textContent=label+' · '+Math.min(i+batch,els.length)+' / '+els.length;
+      await wait(1050);
+    }
+    await wait(3300);
+    group.style.display='none';
+  }
+  start.addEventListener('click',async()=>{
+    if(started)return; started=true;
+    intro.style.display='none'; stage.style.display='flex';
+    prep(love);prep(bday);prep(special);
+    await showGroup(love,'eu te amo');
+    finalMessage.style.display='block';
+  });
+  continueLove.addEventListener('click',async()=>{
+    finalMessage.style.display='none';
+    stage.style.display='flex';
+    await showGroup(bday,'feliz aniversário');
+    birthdayMessage.style.display='block';
+  });
+  continueBirthday.addEventListener('click',async()=>{
+    birthdayMessage.style.display='none';
+    stage.style.display='flex';
+    await showGroup(special,'você é especial para mim');
+    stage.style.display='none';
+    finalMessage.style.display='none';
+    letterReveal.style.display='block';
+    window.scrollTo({top:document.getElementById('birthdayWorld').offsetTop,behavior:'smooth'});
+  });
+})();
+</script>
+</body>
+</html>
+
+<style id="final-art-cleanup">
+/* Limpeza solicitada: nenhuma montanha azul ou nuvem da arte antiga. */
+.mountains, .pixelMountain, .pixelCloud, .cloud1, .cloud2,
+.scrapCloud, .scrapHill, .scrapPixelBackdrop {
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+}
+
+/* Hello Kitty continua visível no scrapbook. */
+.kittyPixelArt, #helloKittyPixel {
+  visibility:visible !important;
+}
+
+/* =========================================================
+   REVELAÇÃO FINAL — 21/09
+========================================================= */
+#birthdayWorld{
+  display:none !important;
+  min-height:100svh;
+  background:#000 !important;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+}
+#birthdayWorld.active{display:block !important;}
+.finalReveal{
+  min-height:100svh; padding:clamp(50px,8vw,100px) 20px 100px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  position:relative; z-index:2; text-align:center;
+}
+.finalIntro{max-width:850px; animation:finalIn 1.8s ease both;}
+.finalIntro h2{font-family:Georgia,serif;font-weight:400;font-size:clamp(2.7rem,8vw,6.5rem);line-height:.98;margin:22px 0;color:#fff;}
+.finalIntro h2 em{color:var(--pink-soft);font-style:italic;}
+.finalIntro p{color:#c9c9c9;line-height:1.8;font-size:clamp(1rem,2vw,1.2rem);}
+.finalStart,.finalContinue{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.055);color:#fff;border-radius:999px;padding:14px 24px;cursor:pointer;font:inherit;transition:.35s;backdrop-filter:blur(12px);}
+.finalStart:hover,.finalContinue:hover{transform:translateY(-3px);background:rgba(242,171,201,.14);border-color:rgba(242,171,201,.5);}
+.languageStage{display:none;min-height:72vh;width:min(1100px,100%);position:relative;align-items:center;justify-content:center;}
+.languageWords{display:none;position:absolute;inset:0;}
+.languagePhrase{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%) scale(.72);opacity:0;filter:blur(4px);animation:phraseIn 3.6s ease forwards;max-width:42vw;}
+.languagePhrase span{display:block;color:rgba(255,255,255,.46);font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;margin-bottom:7px;}
+.languagePhrase strong{display:block;color:#fff;font-family:Georgia,serif;font-size:clamp(1rem,2.3vw,1.65rem);font-weight:400;text-shadow:0 0 20px rgba(255,255,255,.18);white-space:nowrap;}
+.languageCounter{position:absolute;top:12px;left:50%;transform:translateX(-50%);font-size:.7rem;letter-spacing:.18em;color:rgba(255,255,255,.35);text-transform:uppercase;z-index:5;}
+.finalMessage,.birthdayMessage,.letterReveal{display:none;max-width:900px;animation:finalIn 1.5s ease both;}
+.finalMessage span,.birthdayMessage span{color:rgba(255,255,255,.48);letter-spacing:.14em;text-transform:uppercase;font-size:.72rem;}
+.finalMessage h3,.birthdayMessage h3{font-family:Georgia,serif;font-size:clamp(3.2rem,10vw,8rem);font-weight:400;margin:20px 0;color:#fff;text-shadow:0 0 45px rgba(242,171,201,.2);}
+.finalMessage p,.birthdayMessage p{color:#cfcfcf;line-height:1.8;font-size:1rem;margin-bottom:30px;}
+.letterReveal{width:min(900px,100%);text-align:left;}
+.letterReveal>.sectionIndex{text-align:center;display:block;color:var(--pink-soft);}
+.letterReveal h3{text-align:center;font-family:Georgia,serif;font-size:clamp(2rem,5vw,4rem);font-weight:400;margin:20px 0 55px;color:#fff;}
+.finalLetter{background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(255,247,241,.98));color:#252027;padding:clamp(28px,6vw,70px);border-radius:12px;box-shadow:0 30px 100px rgba(0,0,0,.55),0 0 70px rgba(242,171,201,.08);font-family:Georgia,serif;font-size:clamp(1rem,1.45vw,1.12rem);line-height:1.95;}
+.finalLetter p{margin:0 0 1.4em;}
+.finalLetter p:last-child{margin-bottom:0;}
+.letterEnd{text-align:center;margin-top:60px;color:#ddd;font-family:Georgia,serif;}
+.letterEnd span{display:block;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:#777;margin-bottom:15px;}
+.letterEnd strong{font-size:2rem;color:var(--pink-soft);font-weight:400;}
+@keyframes phraseIn{0%{opacity:0;transform:translate(-50%,-50%) scale(.72);filter:blur(5px)}18%,78%{opacity:1;transform:translate(-50%,-50%) scale(1);filter:blur(0)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.08);filter:blur(3px)}}
+@keyframes finalIn{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:none}}
+@media(max-width:600px){.languagePhrase{max-width:75vw}.languagePhrase strong{font-size:1rem}.languagePhrase span{font-size:.58rem}.finalLetter{padding:25px 20px;line-height:1.82}}
+</style>
